@@ -1,0 +1,27 @@
+<!CGS>
+<!Angel Loro>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+    <head>
+        <title>CGS</title>
+    </head>
+    <body>
+        <form th:action="@{/generador}"  th:object="${complex}"  method="Post">
+
+            <select name= "complex">
+                <option value="Constante" >Constante</option>
+                <option value="Logaritmica" >Logaritmica</option>
+                <option value="Lineal" >Lineal</option>
+                <option value="nlog" >nlog</option>
+                <option value="Cuadratica" >Cuadratica</option>
+                <option value="Cubica" >Cubica</option>
+                <option value="Exponencial" >Exponencial</option>
+            </select>
+            
+
+            <input type="submit" value="Generar" />
+
+        </form>
+    </body>
+</html>

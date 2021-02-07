@@ -1,0 +1,85 @@
+<!CGS>
+<!Angel Loro>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+    <head>
+        <title>CGS</title>
+    </head>
+    <body>
+       <form th:action="@{/updateuser/} +${user.getUsername()}" th:object="${user}"  method="Post">
+       <table>
+                    <tr>
+                        <td>
+                            User:
+                        </td>
+
+                        <td>
+
+                            <input th:field="*{username}"/>
+                            <p th:each="error: ${#fields.errors('username')}" 
+                               th:text="${error}">Validation error</p>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Password:
+                        </td>
+
+                        <td>
+
+                            <input th:field="*{password}"/>
+                            <p th:each="error: ${#fields.errors('password')}" 
+                               th:text="${error}">Validation error</p>
+
+
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Complex:
+                        </td>
+
+                        <td>
+
+
+                            <select th:field="*{complex_u}">
+                                <option value="Constante" >Constante</option>
+                                <option value="Logaritmica" >Logaritmica</option>
+                                <option value="Lineal" >Lineal</option>
+                                <option value="nlog" >nlog</option>
+                                <option value="Cuadratica" >Cuadratica</option>
+                                <option value="Cubica" >Cubica</option>
+                                <option value="Exponencial" >Exponencial</option>
+                                <option value="Ninguna" >Ninguna</option>
+                            </select>
+                            <p th:each="error: ${#fields.errors('complex_u')}" 
+                               th:text="${error}">Validation error</p>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Rol:
+                        </td>
+
+                        <td>
+
+                            <select th:field="*{rol_u}">
+                                <option value="Profesor" >Profesor</option>
+                                <option value="Alumno" >Alumno</option>
+                            </select>
+                            <p th:each="error: ${#fields.errors('rol_u')}" 
+                               th:text="${error}">Validation error</p>
+
+                        </td>
+                    </tr>
+                </table>
+        
+            <input type="submit" value="Update" />
+
+        </form>
+    </body>
+</html>
