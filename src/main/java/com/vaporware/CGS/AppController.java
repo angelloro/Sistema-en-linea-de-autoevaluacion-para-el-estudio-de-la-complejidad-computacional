@@ -52,11 +52,11 @@ public class AppController {
         return "users";
     }
 
+   
     @PostMapping("/users")
-    public String selectUser(Model model, String username) {
-        User user = userRepository.findByUserName(username);
-        model.addAttribute("user", user);
-        return "updateUser";
+    public void newUser(HttpServletResponse response) throws IOException {
+        String path = "/newuser";
+        response.sendRedirect(path);
     }
 
     @GetMapping("/newuser")
@@ -81,6 +81,13 @@ public class AppController {
 
         return "success";
     }
+    @GetMapping("/updateuser/{username}")
+    public String updateUser(Model model, @PathVariable(value = "username") String username) {
+        User user = userRepository.findByUserName(username);
+        model.addAttribute("user", user);
+
+        return "updateuser";
+    }
 
     @PostMapping("/updateuser/{username}")
     public String updateSuccessful(@ModelAttribute("user") User user, @PathVariable(value = "username") String username) {
@@ -97,7 +104,6 @@ public class AppController {
 
     @RequestMapping("/generador")
     public String generador(Model model) {
-        //Generador generador= new Generador(3,10,10,5,null);
         String complex = null;
         model.addAttribute("complex", complex);
         return "generador";
@@ -109,7 +115,7 @@ public class AppController {
         System.out.println(complex);
         String path = "generador1/?complex=" + complex;
         response.sendRedirect(path);
-        //return "";
+
     }
 
 }

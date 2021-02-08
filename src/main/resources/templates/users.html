@@ -30,36 +30,16 @@
                         <td th:text="${user.getUsername()}">username</td>
                         <td th:text="${user.getRol_u()}">rol</td>
                         <td th:text="${user.getComplex_u()}">complex</td>
-                        <td><a th:href="@{deleteuser/} + ${user.getUsername()}" th:text="'Eliminar'" class="btn btn-outline-danger"></a></td>
+                        <td><a th:href="@{deleteuser/} + ${user.getUsername()}" th:text="'Eliminar'" ></a></td>
+                        <td><a th:href="@{updateuser/} + ${user.getUsername()}" th:text="'Actualizar'" ></a></td>
 
                     </tr>
                 </tbody>
             </table> 
 
-
-            <select name="username" >
-                <table class="table table-striped table-bordered">
-
-                    <tr>                      
-                        <th>username</th>
-                  
-
-                    </tr>
-
-
-                    <tr th:each="user: ${listUsers}">    
-                        <option>
-                            <td th:text="${user.getUsername()}">username</td>                            
-                        </option>
-
-                    </tr>
-
-
-                </table> 
-
             </select>
             <div>
-                <button type="edit" >submit</button>
+                <button type="newUser" >newUser</button>
             </div>
         </form>
 

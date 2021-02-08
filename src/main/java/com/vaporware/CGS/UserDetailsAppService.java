@@ -30,19 +30,5 @@ public class UserDetailsAppService implements UserDetailsService {
         return new UserDetailsApp(user);
     }
 
-    public void delete(String username) {
-        userRepository.deleteUser(username);
-    }
-
-    public void update(String username, User user) {
-        User userUp = userRepository.findByUserName(username);
-        userUp.setUsername(user.getUsername());
-        userUp.setPassword(user.getPassword());
-        userUp.setComplex_u(user.getComplex_u());
-        userUp.setRol_u(user.getRol_u());
-
-        userRepository.save(userUp);
-
-    }
 
 }

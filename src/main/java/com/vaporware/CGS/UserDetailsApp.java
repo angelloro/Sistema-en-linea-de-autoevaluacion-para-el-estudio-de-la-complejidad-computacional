@@ -10,9 +10,12 @@ package com.vaporware.CGS;
  *
  * @author Angel
  */
+import java.util.ArrayList;
 import java.util.Collection;
+
  
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
  
 public class UserDetailsApp implements UserDetails {
@@ -25,8 +28,12 @@ public class UserDetailsApp implements UserDetails {
  
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        ArrayList<GrantedAuthority> rolApp = new ArrayList<>();
+        rolApp.add(new SimpleGrantedAuthority(getRol()));
+
+        return rolApp;
     }
+    
  
     @Override
     public String getPassword() {

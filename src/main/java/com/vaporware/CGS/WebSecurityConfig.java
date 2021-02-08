@@ -19,8 +19,6 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    DataSource dataSource;
        
     @Bean
     public UserDetailsService userDetailsService() {
@@ -38,9 +36,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
-			.authorizeRequests()
-				.antMatchers("/", "/home").permitAll()
-				.anyRequest().authenticated()
+			.authorizeRequests()						
+                                .antMatchers("/users", "/newuser","/deleteuser/*","/updateuser/*").hasAuthority("Profesor")
+                                .antMatchers("/", "/home","/generador").permitAll()		
+                                .anyRequest().authenticated()
 				.and()
 			.formLogin()
 				.loginPage("/login")
@@ -50,6 +49,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.and()
 			.logout()
 				.permitAll();
+                
+
 	}
 
     @Bean
@@ -57,19 +58,4 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
      
-   
-
-/*
-	@Bean
-	@Override
-	public UserDetailsService userDetailsService() {
-		UserDetails user =
-			 User.withDefaultPasswordEncoder()
-				.username("ragnar")
-				.password("12345")
-				.roles("USER")
- 				.build();
-
-		return new InMemoryUserDetailsManager(user);
-	}*/
 }
