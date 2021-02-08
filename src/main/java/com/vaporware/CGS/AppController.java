@@ -11,6 +11,7 @@ package com.vaporware.CGS;
  */
 import com.vaporware.GeneradorComplejidad.Generador;
 import java.io.IOException;
+import java.security.Principal;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -110,10 +111,18 @@ public class AppController {
     }
 
     @PostMapping("/generador")
-    public void upGenerador(Model model, String complex,HttpServletResponse response) throws IOException {
+    public void upGenerador( String complex,HttpServletResponse response) throws IOException {
 
-        System.out.println(complex);
         String path = "generador1/?complex=" + complex;
+        response.sendRedirect(path);
+
+    }
+    
+    @PostMapping("/generadorAlumno")
+    public void generadorAlumno(HttpServletResponse response,Principal principal) throws IOException {
+        
+        User user = userRepository.findByUserName(principal.getName());
+        String path = "generador1/?complex=" +user.getComplex_u();
         response.sendRedirect(path);
 
     }
