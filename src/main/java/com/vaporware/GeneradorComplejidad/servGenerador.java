@@ -24,18 +24,16 @@ public class servGenerador extends HttpServlet {
                  
                 PrintWriter out = response.getWriter();
                 String complex = request.getParameter("complex");
-                System.out.println(complex);
-                g=new Generador(3,5,5,5,complex);
-                
-                
-
-
+                String metodos = request.getParameter("metodos");
+                String var = request.getParameter("var");
+                String varA = request.getParameter("varA");
+                String bucles = request.getParameter("bucles");
+                g=new Generador(Integer.parseInt(metodos),Integer.parseInt(var),Integer.parseInt(varA),Integer.parseInt(bucles),complex);
                 g.constructor(complex);
-
-                out.print(g.imprimir());
+                out.print(g.mostrarCodigo());
                 //response.setContentType("text/html");
                 //out.println(" Click <a th:href=\"@{/generador}\">here</a> to go generator .");
-                //System.out.println(g.imprimir());
+//                System.out.println(g.imprimir());
                 
              }
      

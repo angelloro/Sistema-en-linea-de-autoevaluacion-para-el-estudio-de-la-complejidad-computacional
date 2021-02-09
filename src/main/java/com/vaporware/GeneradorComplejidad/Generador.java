@@ -68,6 +68,16 @@ public class Generador {
          //System.out.println(codigoFinal);
         return codigoFinal;
     }
+    
+    public String mostrarCodigo(){
+       String  codigoFinal="";
+        for (Method f : methodCollection) {
+            codigoFinal+=(f.getCodigo());
+
+        }
+
+        return codigoFinal;
+    }
 
     public String cambiarCodigo(String codigo) {
         ArrayList<Character> ca = cadenatoArray(codigo);

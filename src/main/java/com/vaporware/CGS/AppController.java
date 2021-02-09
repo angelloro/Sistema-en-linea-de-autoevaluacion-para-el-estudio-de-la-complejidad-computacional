@@ -106,14 +106,20 @@ public class AppController {
     @RequestMapping("/generador")
     public String generador(Model model) {
         String complex = null;
+        int metodos = 0,var = 0,varA = 0,bucles = 0;
         model.addAttribute("complex", complex);
+        model.addAttribute("metodos", metodos);
+        model.addAttribute("var", var);
+        model.addAttribute("varA", varA);
+        model.addAttribute("bucles", bucles);
         return "generador";
     }
 
     @PostMapping("/generador")
-    public void upGenerador( String complex,HttpServletResponse response) throws IOException {
+    public void upGenerador( String complex,HttpServletResponse response,int metodos,int var,int varA,int bucles) throws IOException {
 
         String path = "generador1/?complex=" + complex;
+        path+="&metodos="+metodos+"&var="+var+"&varA="+varA+"&bucles="+bucles;
         response.sendRedirect(path);
 
     }

@@ -7,9 +7,9 @@
         <title>CGS</title>
     </head>
     <body>
-        <form th:action="@{/generador}"  th:object="${complex}"  method="Post">
+        <form th:action="@{/generador}"  method="Post">
 
-            <select name= "complex">
+            <p>Orden de Complejidad<select name= "complex">
                 <option value="Constante" >Constante</option>
                 <option value="Logaritmica" >Logaritmica</option>
                 <option value="Lineal" >Lineal</option>
@@ -17,7 +17,12 @@
                 <option value="Cuadratica" >Cuadratica</option>
                 <option value="Cubica" >Cubica</option>
                 <option value="Exponencial" >Exponencial</option>
-            </select>
+                </select></p>
+            
+            <p>Cantidad Metodos: <input type="number" name="metodos"> </p>
+            <p>Cantidad variables: <input type="number" name="var"> </p>
+            <p>Cantidad variables Array: <input type="number" name="varA"> </p>
+            <p>Nº maximo bucles por tipo: <input type="number" name="bucles"> </p>
             
 
             <input type="submit" value="Generar" />
