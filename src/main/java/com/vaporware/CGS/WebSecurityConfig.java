@@ -36,10 +36,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
+
 			.authorizeRequests()						
                                 .antMatchers("/users", "/newuser","/deleteuser/*","/updateuser/*").hasAuthority("Profesor")
                                 .antMatchers("/generadorAlumno").hasAuthority("Alumno")
-                                .antMatchers("/", "/home","/generador","/generador1/*").permitAll()		
+                                .antMatchers("/", "/home","/generador","/generador1/*/*/*/*/*").permitAll()		
                                 .anyRequest().authenticated()
 				.and()
 			.formLogin()
@@ -49,6 +50,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                                 .passwordParameter("password")
 				.and()
 			.logout()
+                                .logoutSuccessUrl("/home")
 				.permitAll();
                 
 

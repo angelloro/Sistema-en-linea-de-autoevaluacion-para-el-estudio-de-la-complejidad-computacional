@@ -8,14 +8,14 @@
     </head>
     <body>
         <div th:if="${param.error}">
-            Invalid username and password.
+            Login incorrecto.
         </div>
         <div th:if="${param.logout}">
-            You have been logged out.
+            Hasta la vista.
         </div>
         <form th:action="@{/login}" method="post">
-            <div><label> User Name : <input type="text" name="username" /> </label></div>
-            <div><label> Password: <input type="password" name="password" /></label></div>
+            <div><label> Usuario : <input type="text" name="username" /> </label></div>
+            <div><label> Contraseña: <input type="password" name="password" /></label></div>
             <div><input type="submit" value="Sign In"/></div>
         </form>
     </body>

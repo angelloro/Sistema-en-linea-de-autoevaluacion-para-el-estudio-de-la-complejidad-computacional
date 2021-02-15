@@ -16,18 +16,18 @@
 
                     <tr>
                         <th>ID</th>
-                        <th>username</th>
+                        <th>usuario</th>
                         <th>rol</th>
                         <th>complex</th>
-                        <th>delete</th>
-                        <th>update</th>
+                        <th>eliminar</th>
+                        <th>modificar</th>
 
                     </tr>
                 </thead>
                 <tbody>
                     <tr th:each="user: ${listUsers}">
                         <td th:text="${user.getId()}">ID</td>
-                        <td th:text="${user.getUsername()}">username</td>
+                        <td th:text="${user.getUsername()}">usuario</td>
                         <td th:text="${user.getRol_u()}">rol</td>
                         <td th:text="${user.getComplex_u()}">complex</td>
                         <td><a th:href="@{deleteuser/} + ${user.getUsername()}" th:text="'Eliminar'" ></a></td>
@@ -39,7 +39,7 @@
 
             </select>
             <div>
-                <button type="newUser" >newUser</button>
+                <button type="newUser" >Crear Usuario</button>
             </div>
         </form>
 

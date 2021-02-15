@@ -9,23 +9,24 @@
     <body>
         <form th:action="@{/generador}"  method="Post">
 
-            <p>Orden de Complejidad<select name= "complex">
-                <option value="Constante" >Constante</option>
-                <option value="Logaritmica" >Logaritmica</option>
-                <option value="Lineal" >Lineal</option>
+            <p>Orden de Complejidad: <select name= "complex">
+                <option value="constante" >Constante</option>
+                <option value="logaritmica" >Logaritmica</option>
+                <option value="lineal" >Lineal</option>
                 <option value="nlog" >nlog</option>
-                <option value="Cuadratica" >Cuadratica</option>
-                <option value="Cubica" >Cubica</option>
-                <option value="Exponencial" >Exponencial</option>
+                <option value="cuadratica" >Cuadratica</option>
+                <option value="cubica" >Cubica</option>
+                <option value="exponencial" >Exponencial</option>
                 </select></p>
             
-            <p>Cantidad Metodos: <input type="number" name="metodos"> </p>
-            <p>Cantidad variables: <input type="number" name="var"> </p>
-            <p>Cantidad variables Array: <input type="number" name="varA"> </p>
-            <p>Nº maximo bucles por tipo: <input type="number" name="bucles"> </p>
+            <p>Cantidad Metodos: <input type="number" min="1" max="5" name="metodos"> </p>
+            <p>Cantidad variables: <input type="number" min="1" max="20" name="var"> </p>
+            <p>Cantidad variables Array: <input type="number"  min="1" max="20" name="varA"> </p>
+            <p>Nº maximo bucles por tipo: <input type="number" min="1" max="5" name="bucles"> </p>
             
 
             <input type="submit" value="Generar" />
+            <p>Click <a th:href="@{/home}">aqui</a> para volver al inicio .</p>
 
         </form>
     </body>

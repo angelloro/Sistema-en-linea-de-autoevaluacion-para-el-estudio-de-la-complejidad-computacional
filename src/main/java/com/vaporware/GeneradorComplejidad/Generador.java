@@ -55,6 +55,8 @@ public class Generador {
         numeroMaximo = cantMax;
         restartStats(numeroMaximo);
         this.Complex=Complex;
+        constructor(Complex);
+ 
 
     }
 
@@ -75,6 +77,15 @@ public class Generador {
             codigoFinal+=(f.getCodigo());
 
         }
+
+        return codigoFinal;
+    }
+     public String mostrarCodigoMetodo(int x){
+       String  codigoFinal="";
+        
+            codigoFinal=(methodCollection.get(x).getCodigo());
+
+        
 
         return codigoFinal;
     }
@@ -139,15 +150,15 @@ public class Generador {
         codigo = "";
         codigoFinal = "";
         switch (complex) {
-            case "Constante":
+            case "constante":
                 complex1 = 0;
                 valorTn = methodDeclaration(0);
                 break;
-            case "Logaritmica":
+            case "logaritmica":
                 complex1 = 0;
                 valorTn = methodDeclaration(1);
                 break;
-            case "Lineal":
+            case "lineal":
                 complex1 = 1;
                 valorTn = methodDeclaration(0);
                 break;
@@ -155,15 +166,15 @@ public class Generador {
                 complex1 = 0;
                 valorTn = methodDeclaration(2);
                 break;
-            case "Cuadratica":
+            case "cuadratica":
                 complex1 = 2;
                 valorTn = methodDeclaration(0);
                 break;
-            case "Cubica":
+            case "cubica":
                 complex1 = 3;
                 valorTn = methodDeclaration(0);
                 break;
-            case "Exponencial":
+            case "exponencial":
                 complex1 = r.nextInt(4);
                 valorTn = methodDeclaration(4);
                 break;

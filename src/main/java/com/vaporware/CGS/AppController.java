@@ -13,6 +13,7 @@ import com.vaporware.GeneradorComplejidad.Generador;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
+import java.util.Random;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class AppController {
+    Generador g;
 
     @Autowired
     private UserRepository userRepository;
@@ -49,11 +51,9 @@ public class AppController {
     public String listUsers(Model model) {
         List<User> listUsers = userRepository.findAll();
         model.addAttribute("listUsers", listUsers);
-
         return "users";
     }
 
-   
     @PostMapping("/users")
     public void newUser(HttpServletResponse response) throws IOException {
         String path = "/newuser";
@@ -82,6 +82,7 @@ public class AppController {
 
         return "success";
     }
+
     @GetMapping("/updateuser/{username}")
     public String updateUser(Model model, @PathVariable(value = "username") String username) {
         User user = userRepository.findByUserName(username);
@@ -106,7 +107,7 @@ public class AppController {
     @RequestMapping("/generador")
     public String generador(Model model) {
         String complex = null;
-        int metodos = 0,var = 0,varA = 0,bucles = 0;
+        int metodos = 0, var = 0, varA = 0, bucles = 0;
         model.addAttribute("complex", complex);
         model.addAttribute("metodos", metodos);
         model.addAttribute("var", var);
@@ -116,19 +117,37 @@ public class AppController {
     }
 
     @PostMapping("/generador")
-    public void upGenerador( String complex,HttpServletResponse response,int metodos,int var,int varA,int bucles) throws IOException {
+    public void upGenerador(String complex, HttpServletResponse response, int metodos, int var, int varA, int bucles) throws IOException {
 
-        String path = "generador1/?complex=" + complex;
-        path+="&metodos="+metodos+"&var="+var+"&varA="+varA+"&bucles="+bucles;
+        String path = "generador1/" + complex;
+        path += "/" + metodos + "/" + var + "/" + varA + "/" + bucles;
         response.sendRedirect(path);
 
     }
+
+    @GetMapping("/generador1/{complex}/{metodos}/{var}/{varA}/{bucles}")
+    public String generador1(Model model,@PathVariable("complex") String complex, @PathVariable("metodos") String metodos, @PathVariable("var") String var,
+                             @PathVariable("varA") String varA, @PathVariable("bucles") String bucles) {
+        
+        g = new Generador(Integer.parseInt(metodos), Integer.parseInt(var), Integer.parseInt(varA), Integer.parseInt(bucles), complex);
+        model.addAttribute("generador", g);
+        return "generador1";
+    }
+
+    @PostMapping("/generador1")
+    public void upGenerador1( String complex) {
+
+
+    }
+    
     
     @PostMapping("/generadorAlumno")
-    public void generadorAlumno(HttpServletResponse response,Principal principal) throws IOException {
-        
+    public void generadorAlumno(HttpServletResponse response, Principal principal) throws IOException {
+
         User user = userRepository.findByUserName(principal.getName());
-        String path = "generador1/?complex=" +user.getComplex_u();
+        String path = "generador1/" + user.getComplex_u();
+        Random r = new Random();
+        path += "/" + r.nextInt(5) + "/" + r.nextInt(20) + "/" + r.nextInt(20) + "/" + r.nextInt(5);
         response.sendRedirect(path);
 
     }

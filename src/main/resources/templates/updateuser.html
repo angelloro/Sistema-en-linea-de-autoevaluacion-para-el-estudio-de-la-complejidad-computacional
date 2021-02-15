@@ -11,7 +11,7 @@
        <table>
                     <tr>
                         <td>
-                            User:
+                            Usuario:
                         </td>
 
                         <td>
@@ -24,7 +24,7 @@
                     </tr>
                     <tr>
                         <td>
-                            Password:
+                            Contraseña:
                         </td>
 
                         <td>
@@ -46,13 +46,13 @@
 
 
                             <select th:field="*{complex_u}">
-                                <option value="Constante" >Constante</option>
-                                <option value="Logaritmica" >Logaritmica</option>
-                                <option value="Lineal" >Lineal</option>
+                                <option value="constante" >Constante</option>
+                                <option value="logaritmica" >Logaritmica</option>
+                                <option value="lineal" >Lineal</option>
                                 <option value="nlog" >nlog</option>
-                                <option value="Cuadratica" >Cuadratica</option>
-                                <option value="Cubica" >Cubica</option>
-                                <option value="Exponencial" >Exponencial</option>
+                                <option value="cuadratica" >Cuadratica</option>
+                                <option value="cubica" >Cubica</option>
+                                <option value="exponencial" >Exponencial</option>
                                 <option value="Ninguna" >Ninguna</option>
                             </select>
                             <p th:each="error: ${#fields.errors('complex_u')}" 
@@ -78,7 +78,7 @@
                     </tr>
                 </table>
         
-            <input type="submit" value="Update" />
+            <input type="submit" value="Modificar" />
 
         </form>
     </body>
