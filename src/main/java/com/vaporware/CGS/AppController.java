@@ -12,6 +12,7 @@ package com.vaporware.CGS;
 import com.vaporware.GeneradorComplejidad.Generador;
 import java.io.IOException;
 import java.security.Principal;
+import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 import javax.servlet.http.HttpServletResponse;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -37,9 +39,9 @@ public class AppController {
         return "home";
     }
 
-    @GetMapping("/hello")
+    @GetMapping("/info")
     public String hello() {
-        return "hello";
+        return "info";
     }
 
     @GetMapping("/login")
@@ -68,19 +70,21 @@ public class AppController {
     }
 
     @PostMapping("/newuser")
-    public String processRegister(@ModelAttribute("user") User user) {
+    public void processRegister(@ModelAttribute("user") User user,HttpServletResponse response) throws IOException {
 
         userRepository.save(user);
-
-        return "success";
+        String path = "/users";
+        response.sendRedirect(path);
+        //return "users";
     }
 
     @GetMapping("/deleteuser/{username}")
-    public String deleteSuccessful(@PathVariable(value = "username") String username) {
+    public void deleteSuccessful(@PathVariable(value = "username") String username,HttpServletResponse response)throws IOException {
 
         userRepository.delete(userRepository.findByUserName(username));
-
-        return "success";
+        String path = "/users";
+        response.sendRedirect(path);
+       // return "users";
     }
 
     @GetMapping("/updateuser/{username}")
@@ -92,7 +96,7 @@ public class AppController {
     }
 
     @PostMapping("/updateuser/{username}")
-    public String updateSuccessful(@ModelAttribute("user") User user, @PathVariable(value = "username") String username) {
+    public void  updateSuccessful(@ModelAttribute("user") User user, @PathVariable(value = "username") String username,HttpServletResponse response)throws IOException {
         User userUp = userRepository.findByUserName(username);
         userUp.setUsername(user.getUsername());
         userUp.setPassword(user.getPassword());
@@ -100,8 +104,9 @@ public class AppController {
         userUp.setRol_u(user.getRol_u());
 
         userRepository.save(userUp);
-
-        return "success";
+        String path = "/users";
+        response.sendRedirect(path);
+        //return "success";
     }
 
     @RequestMapping("/generador")
@@ -131,12 +136,13 @@ public class AppController {
         
         g = new Generador(Integer.parseInt(metodos), Integer.parseInt(var), Integer.parseInt(varA), Integer.parseInt(bucles), complex);
         model.addAttribute("generador", g);
+        //System.out.println(g.imprimir());
         return "generador1";
     }
 
     @PostMapping("/generador1")
     public void upGenerador1( String complex) {
-
+       // System.out.println(g.imprimir());
 
     }
     
@@ -147,7 +153,7 @@ public class AppController {
         User user = userRepository.findByUserName(principal.getName());
         String path = "generador1/" + user.getComplex_u();
         Random r = new Random();
-        path += "/" + r.nextInt(5) + "/" + r.nextInt(20) + "/" + r.nextInt(20) + "/" + r.nextInt(5);
+        path += "/" + r.nextInt(5)+1 + "/" + r.nextInt(20)+1 + "/" + r.nextInt(20)+1 + "/" + r.nextInt(5)+1;
         response.sendRedirect(path);
 
     }

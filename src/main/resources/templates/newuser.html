@@ -3,86 +3,100 @@
     <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
           xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
         <head>
-            <h1> New User</h1>
+
+            <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" type="text/css">
+                <style>
+                    body {font-family: Arial, Helvetica, sans-serif;background: #808080;color: #000000 ;text-align:left;font-size: 20px}
+                    h1{
+                        text-align:center;
+                        color:#FFFFFF;
+                    }
+
+                    button {
+
+                        color:#FFFFFF ;
+                        background-color: #508723;
+                        padding: 14px 20px;
+                        margin: 8px 0;
+                        border: none;
+                        cursor: pointer;
+                        width: 100%;
+                    }
+
+                    button:hover {
+                        opacity: 0.8;
+                    }
+                    input {
+                        width: 100%;
+                        text-align: left;
+                        padding: 12px 20px;                  
+                        display: inline-block;
+                        border: 1px solid #ccc;
+
+                    }
+                    select{
+                        width: 100%;
+                        text-align: center;
+                        padding: 12px 20px;                  
+                        display: inline-block;
+                        border: 1px solid #ccc;
+                    }
+
+
+                </style>
         </head>
         <body>
+            <h1> Crear Nuevo Usuario</h1>
             <form th:action="@{/newuser}" th:object="${user}" method="POST" enctype="utf8">
-                <table>
-                    <tr>
-                        <td>
-                            Usuario:
-                        </td>
+                
+                <div class="parametros m-2 ">
+                <div class="form-group">
+                    <label for="username">Usuario:</label>
+                    <input th:field="*{username}" placeholder="Introduzca nuevo nombre usuario"/>
+                    <p th:each="error: ${#fields.errors('username')}" 
+                       th:text="${error}">Validation error</p>
+                </div>
+                <div class="form-group">
+                    <label for="password">Contraseña:</label>
+                    <input th:field="*{password}" placeholder="Introduzca nueva Contraseña"/>
+                    <p th:each="error: ${#fields.errors('password')}" 
+                       th:text="${error}">Validation error</p>
+                </div>
+                <div class="form-group">
+                    <label for="complex">Complejidad:</label>
+                    <select th:field="*{complex_u}">
+                        <option value="constante" >Constante</option>
+                        <option value="logaritmica" >Logaritmica</option>
+                        <option value="lineal" >Lineal</option>
+                        <option value="nlog" >nlog</option>
+                        <option value="cuadratica" >Cuadratica</option>
+                        <option value="cubica" >Cubica</option>
+                        <option value="exponencial" >Exponencial</option>
+                        <option value="ninguna" >Ninguna</option>
+                    </select>
+                    <p th:each="error: ${#fields.errors('complex_u')}" 
+                       th:text="${error}">Validation error</p>
 
-                        <td>
-                            <!-- <input th:field="*{useraname}"/>-->
+                </div>
+                <div class="form-group">
+                    <label for="Rol">Rol:</label>
+                    <select th:field="*{rol_u}">
+                        <option value="Profesor" >Profesor</option>
+                        <option value="Alumno" >Alumno</option>
+                    </select>
 
-                            <input th:field="*{username}"/>
-                            <p th:each="error: ${#fields.errors('username')}" 
-                               th:text="${error}">Validation error</p>
+                    <p th:each="error: ${#fields.errors('rol_u')}" 
+                       th:text="${error}">Validation error</p>
 
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Contraseña:
-                        </td>
+                </div>
 
-                        <td>
+                </div>
 
-                            <input th:field="*{password}"/>
-                            <p th:each="error: ${#fields.errors('password')}" 
-                               th:text="${error}">Validation error</p>
-
-
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Complex:
-                        </td>
-
-                        <td>
-                            <select th:field="*{complex_u}">
-                                <option value="constante" >Constante</option>
-                                <option value="logaritmica" >Logaritmica</option>
-                                <option value="lineal" >Lineal</option>
-                                <option value="nlog" >nlog</option>
-                                <option value="cuadratica" >Cuadratica</option>
-                                <option value="cubica" >Cubica</option>
-                                <option value="exponencial" >Exponencial</option>
-                                <option value="ninguna" >Ninguna</option>
-                            </select>
-
-
-
-                            <p th:each="error: ${#fields.errors('complex_u')}" 
-                               th:text="${error}">Validation error</p>
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Rol:
-                        </td>
-
-                        <td>
-                            <select th:field="*{rol_u}">
-                                <option value="Profesor" >Profesor</option>
-                                <option value="Alumno" >Alumno</option>
-                            </select>
-
-                            <p th:each="error: ${#fields.errors('rol_u')}" 
-                               th:text="${error}">Validation error</p>
-
-                        </td>
-                    </tr>
-                </table>
-
-                <div>
-                    <button type="submit" >submit</button>
+                <div class="text-center btn-lg">
+                    <button type="submit" >Crear Usuario</button>
                 </div>
             </form> 
-
+            <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+            <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
         </body>
     </html>

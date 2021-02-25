@@ -5,18 +5,71 @@
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
     <head>
         <title>CGS </title>
+        <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" type="text/css">
+            <style>
+                body {font-family: Arial, Helvetica, sans-serif;font-size: 25px;background: #808080; }
+                form {border: 3px solid #f1f1f1;}
+
+                input[type=text], input[type=password] {
+                    width: 100%;
+                    text-align: center;
+                    padding: 12px 20px;                  
+                    display: inline-block;
+                    border: 1px solid #ccc;
+                  
+                }
+
+                button {
+                    
+                    color: white;
+                    padding: 14px 20px;
+                    margin: 8px 0;
+                    border: none;
+                    cursor: pointer;
+                    
+                }
+
+                button:hover {
+                    opacity: 0.8;
+                }
+                .back{
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    min-height: 50vh;
+                }
+                .login { 
+                    width: 500px;       
+                    height: 200px;
+                    background: #508723 ;
+                }
+                .text-center{
+                     background: #508723 ;
+                }
+
+            </style>
     </head>
     <body>
-        <div th:if="${param.error}">
+        <div th:if="${param.error}"class="p-3 mb-2 bg-danger text-white">
             Login incorrecto.
         </div>
         <div th:if="${param.logout}">
             Hasta la vista.
         </div>
-        <form th:action="@{/login}" method="post">
-            <div><label> Usuario : <input type="text" name="username" /> </label></div>
-            <div><label> Contraseña: <input type="password" name="password" /></label></div>
-            <div><input type="submit" value="Sign In"/></div>
-        </form>
+        <div class="back">
+            <div class="login">
+                <form th:action="@{/login}" method="post">
+                    <p class="text-center">Usuario: </p>
+                    <input type="text" name="username"  />
+                    <p class="text-center">Contraseña: </p>
+                    <input type="password" name="password"  />
+                    <div class="text-center "  >
+                    <input type="submit" value="Sign In" />
+                    </div>
+                </form>
+            </div>
+        </div>
+        <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+        <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
     </body>
 </html>

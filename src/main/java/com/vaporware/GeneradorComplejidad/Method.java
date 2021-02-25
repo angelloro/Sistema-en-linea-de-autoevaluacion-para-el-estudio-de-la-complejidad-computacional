@@ -21,8 +21,8 @@ public class Method {
     private boolean type;
     private PolynomialFunction tn;
     private PolynomialFunction tnLog;
-    private boolean log;
     private PolynomialFunction tnExp;
+    private boolean log;   
     private boolean exp;
 
     public Method(String name, ArrayList<String> variables, boolean type, PolynomialFunction tn, PolynomialFunction tnLog, boolean log,PolynomialFunction tnExp, boolean exp,ArrayList<String> valores) {
