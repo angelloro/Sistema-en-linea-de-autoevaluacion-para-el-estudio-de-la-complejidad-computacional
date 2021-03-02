@@ -117,13 +117,22 @@ public class Method {
     @Override
     public String toString() {
         if (log) {
-            return separador()+"Method{" + "name=" + name + ", type=" + type + ", tn=" + tn + "+ Log("+tnLog+"n)"  + '}' + '\n' + codigo+"\n"+mostrarValores()+separador();
+            return "Method{" + "name=" + name + ", type=" + type + ", tn=" + tn + "+ Log("+tnLog+"n)"  + '}' + '\n' + codigo+"\n"+mostrarValores();
         } else if(exp) {
-             return separador()+"Method{" + "name=" + name + ", type=" + type + ", tn=" + tn + "+ 2^n*" +'('+tnExp+')' + '}' + '\n' + codigo+"\n"+mostrarValores()+separador();
+             return "Method{" + "name=" + name + ", type=" + type + ", tn=" + tn + "+ 2^n*" +'('+tnExp+')' + '}' + '\n' + codigo+"\n"+mostrarValores();
         }else{
-            return separador()+"Method{" + "name=" + name + ", type=" + type + ", tn=" + tn + '}' + '\n' + codigo+"\n"+mostrarValores()+separador();
+            return "Method{" + "name=" + name + ", type=" + type + ", tn=" + tn + '}' + '\n' + codigo+"\n"+mostrarValores();
         }
 
+    }
+    public String correccion(){
+        if (log) {
+            return "Method{" + "name=" + name + ", Tn=" + tn + "+ Log("+tnLog+"n)"  + '}' + '\n'+mostrarValores();
+        } else if(exp) {
+             return "Method{" + "name=" + name + ", Tn=" + tn + "+ 2^n*" +'('+tnExp+')' + '}' + "\n"+mostrarValores();
+        }else{
+            return "Method{" + "name=" + name +  ", Tn=" + tn + '}' + "\n"+mostrarValores();
+        }
     }
     
     public String separador(){

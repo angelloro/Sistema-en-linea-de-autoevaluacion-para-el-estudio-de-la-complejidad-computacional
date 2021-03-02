@@ -12,7 +12,6 @@ package com.vaporware.CGS;
 import com.vaporware.GeneradorComplejidad.Generador;
 import java.io.IOException;
 import java.security.Principal;
-import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 import javax.servlet.http.HttpServletResponse;
@@ -36,7 +35,7 @@ public class AppController {
 
     @GetMapping("/")
     public String home() {
-        return "home";
+        return "generador";
     }
 
     @GetMapping("/info")
@@ -136,7 +135,6 @@ public class AppController {
         
         g = new Generador(Integer.parseInt(metodos), Integer.parseInt(var), Integer.parseInt(varA), Integer.parseInt(bucles), complex);
         model.addAttribute("generador", g);
-        //System.out.println(g.imprimir());
         return "generador1";
     }
 

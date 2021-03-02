@@ -206,7 +206,7 @@ public class Generador {
                 methodParams.add(s);
 
             }
-
+            
             Method m = new Method("metodo" + contMethod, methodParams, type, valorIdentC, funcLog, false,funcExp,false,valores);
             methodCollection.add(m);
             funcLog = valorIdentC;
@@ -714,7 +714,7 @@ public class Generador {
         valorTE = block(variables, variablesArray, 0, false, n);
         valorTn = valorTn.add(maxFunction(valorTI, valorTE));
         
-        methodCollection.get(methodCollection.size() - 1).getValores().add("IfElse-"+valorTn.toString());
+        methodCollection.get(methodCollection.size() - 1).getValores().add("IfElse->"+valorTn.toString());
      
 
         return valorTn;
@@ -729,7 +729,7 @@ public class Generador {
         codigo += ")\n";
         valorTn = valorTn.add(block(variables, variablesArray, 0, false, n));
 
-        methodCollection.get(methodCollection.size() - 1).getValores().add("If-"+valorTn.toString());
+        methodCollection.get(methodCollection.size() - 1).getValores().add("If->"+valorTn.toString());
 
         
         return valorTn;
@@ -745,7 +745,7 @@ public class Generador {
         valorTn = valorTn.add(switchBlock(variables, variablesArray, n));
         codigo += "\n";
         
-        methodCollection.get(methodCollection.size() - 1).getValores().add("Switch-"+valorTn.toString());
+        methodCollection.get(methodCollection.size() - 1).getValores().add("Switch->"+valorTn.toString());
 
 
         return valorTn;
@@ -864,7 +864,7 @@ public class Generador {
 
         valorTn = valorTe.add(valorTB).add(valorIdent).add(valorTs);
         
-        methodCollection.get(methodCollection.size() - 1).getValores().add("whileN-"+valorTn.toString());
+        methodCollection.get(methodCollection.size() - 1).getValores().add("whileN->"+valorTn.toString());
 
         
         return valorTn;
@@ -884,7 +884,7 @@ public class Generador {
 
         funcLog = valorTe.add(block(variables, variablesArray, 1, false, 0));
         
-        methodCollection.get(methodCollection.size() - 1).getValores().add("whileL-"+funcLog.toString());
+        methodCollection.get(methodCollection.size() - 1).getValores().add("whileL->"+funcLog.toString());
      
 
         return funcLog;
@@ -929,7 +929,7 @@ public class Generador {
 
         valorTn = valorTn.add(repeticionFor.multiply(block(variables2, variablesArray2, 0, false, n)));
  
-        methodCollection.get(methodCollection.size() - 1).getValores().add("For-"+valorTn.toString());
+        methodCollection.get(methodCollection.size() - 1).getValores().add("For->"+valorTn.toString());
  
 
         return valorTn;
@@ -951,7 +951,7 @@ public class Generador {
         valorTn = valorIdent;
         methodCollection.get(methodCollection.size() - 1).setExp(true);
         funcExp= valorTn.add(valorIdent.multiply(block(variables2, variablesArray2, 0, false, complex1)));
-        methodCollection.get(methodCollection.size() - 1).getValores().add(valorTn.toString() + "forE");
+        methodCollection.get(methodCollection.size() - 1).getValores().add("forE->"+valorTn.toString());
 
         
 
@@ -1911,4 +1911,8 @@ public class Generador {
         return valorTn;
     }
 
+    public ArrayList<Method> getMethodCollection() {
+        return methodCollection;
+    }
+    
 }
