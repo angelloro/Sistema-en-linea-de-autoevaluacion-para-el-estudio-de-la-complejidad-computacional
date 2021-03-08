@@ -134,6 +134,7 @@ public class AppController {
                              @PathVariable("varA") String varA, @PathVariable("bucles") String bucles) {
         
         g = new Generador(Integer.parseInt(metodos), Integer.parseInt(var), Integer.parseInt(varA), Integer.parseInt(bucles), complex);
+
         model.addAttribute("generador", g);
         return "generador1";
     }
@@ -145,13 +146,14 @@ public class AppController {
     }
     
     
-    @PostMapping("/generadorAlumno")
+    @GetMapping("/generadorAlumno")
     public void generadorAlumno(HttpServletResponse response, Principal principal) throws IOException {
 
         User user = userRepository.findByUserName(principal.getName());
         String path = "generador1/" + user.getComplex_u();
         Random r = new Random();
-        path += "/" + r.nextInt(5)+1 + "/" + r.nextInt(20)+1 + "/" + r.nextInt(20)+1 + "/" + r.nextInt(5)+1;
+        path += "/"+ String.valueOf(r.nextInt(5)+1) + "/" +  String.valueOf(r.nextInt(20)+1) + "/" +  String.valueOf(r.nextInt(20)+1) + "/" +  String.valueOf(r.nextInt(5)+1);
+
         response.sendRedirect(path);
 
     }

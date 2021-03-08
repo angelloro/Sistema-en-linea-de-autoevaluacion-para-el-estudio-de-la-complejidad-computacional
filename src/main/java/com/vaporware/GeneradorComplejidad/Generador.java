@@ -9,25 +9,26 @@ import java.util.ArrayList;
 import java.util.Random;
 import org.apache.commons.math4.analysis.polynomials.PolynomialFunction;
 
-
 /**
  *
  * @author Angel Loro Mosqueda
  */
-
 public class Generador {
 
     private String codigo, codigoFinal, codigoF;
     private Random r;
     private int x, k1, j1;
     private PolynomialFunction repeticionFor;
-    private PolynomialFunction funcLog,funcExp;
-    
+    private PolynomialFunction funcLog, funcExp;
+
     public String Complex;
 
     private int cantidadMethod, contMethod;
     private boolean type;
+    private boolean funcnLog;
+    private boolean obligatorio;
     ArrayList<Method> methodCollection = new ArrayList<Method>();
+    ArrayList<String> listaValores = new ArrayList<String>();
 
     private int cantidadVar, cantidadVarA, maxVar, maxVarA;
 
@@ -44,9 +45,8 @@ public class Generador {
     final private PolynomialFunction valorIdentC = new PolynomialFunction(valorC);
 
     private int complex1;
-    
 
-    public Generador( int methodN, int var, int varA, int cantMax,String Complex) {
+    public Generador(int methodN, int var, int varA, int cantMax, String Complex) {
 
         r = new Random();
         cantidadMethod = methodN;
@@ -54,38 +54,36 @@ public class Generador {
         maxVarA = varA;
         numeroMaximo = cantMax;
         restartStats(numeroMaximo);
-        this.Complex=Complex;
+        this.Complex = Complex;
         constructor(Complex);
- 
 
     }
 
     public String imprimir() {
         codigoFinal = cambiarCodigo(codigoFinal);
-       codigoFinal="";
+        codigoFinal = "";
         for (Method f : methodCollection) {
-            codigoFinal+=(f.toString());
+            codigoFinal += (f.toString());
 
         }
-         //System.out.println(codigoFinal);
+        //System.out.println(codigoFinal);
         return codigoFinal;
     }
-    
-    public String mostrarCodigo(){
-       String  codigoFinal="";
+
+    public String mostrarCodigo() {
+        String codigoFinal = "";
         for (Method f : methodCollection) {
-            codigoFinal+=(f.getCodigo());
+            codigoFinal += (f.getCodigo());
 
         }
 
         return codigoFinal;
     }
-     public String mostrarCodigoMetodo(int x){
-       String  codigoFinal="";
-        
-            codigoFinal=(methodCollection.get(x).getCodigo());
 
-        
+    public String mostrarCodigoMetodo(int x) {
+        String codigoFinal = "";
+
+        codigoFinal = (methodCollection.get(x).getCodigo());
 
         return codigoFinal;
     }
@@ -145,7 +143,7 @@ public class Generador {
     }
 
     public PolynomialFunction constructor(String complex) {
-       // complex=this.Complex;
+        // complex=this.Complex;
         PolynomialFunction valorTn;
         codigo = "";
         codigoFinal = "";
@@ -171,6 +169,7 @@ public class Generador {
                 valorTn = methodDeclaration(0);
                 break;
             case "cubica":
+                obligatorio=true;
                 complex1 = 3;
                 valorTn = methodDeclaration(0);
                 break;
@@ -206,18 +205,25 @@ public class Generador {
                 methodParams.add(s);
 
             }
-            
-            Method m = new Method("metodo" + contMethod, methodParams, type, valorIdentC, funcLog, false,funcExp,false,valores);
+            if (n == 2) {
+                funcnLog = true;
+            } else {
+                funcnLog = false;
+            }
+
+            Method m = new Method("metodo" + contMethod, methodParams, type, valorIdentC, funcLog, false, funcExp, false, funcnLog, valores);
             methodCollection.add(m);
             funcLog = valorIdentC;
             valorTn = valorTn.add(blockMethod(variables, variablesArray, n));
             m.setTn(valorTn);
             m.setCodigo(cambiarCodigo(codigo));
+
             codigoFinal += codigo;
             codigo = "";
             m.setTnLog(funcLog);
             m.setTnExp(funcExp);
 
+            m.valorModificado();
             restartStats(numeroMaximo);
             valorTn = valorIdentC;
 
@@ -491,8 +497,8 @@ public class Generador {
         if (opt == 3) {
             valorTn = valorTn.add(whileStatementN(variables, variablesArray, 0, true));
         }
-        if (opt == 4||opt==5) {
- 
+        if (opt == 4 || opt == 5) {
+
             valorTn = valorTn.add(forStatementE(variables, variablesArray, 0));
         }
         if (log) {
@@ -507,7 +513,7 @@ public class Generador {
             codigo += codF + "*=" + "2" + ";\n";
             valorTn = valorTn.add(valorIdent);
 
-        } else if (opt == 2 || opt==5) {
+        } else if (opt == 2 || opt == 5) {
             valorTn = valorTn.add(returnStatement(variables, variablesArray));
         }
         codigo += "}\n";
@@ -523,12 +529,11 @@ public class Generador {
             cont--;
             valorTn = blockStatement(variables, variablesArray, n);
             valorTn = valorTn.add(blockStatements(variables, variablesArray, n, cont));
-      
 
         } else {
 
             valorTn = blockStatement(variables, variablesArray, n);
- 
+
         }
 
         return valorTn;
@@ -540,7 +545,6 @@ public class Generador {
         PolynomialFunction valorTn = null;
         if (x <= 25 && maxVar > variables.size() && maxVarA > variablesArray.size() || variables.size() < 1 || variablesArray.size() < 1) {
             valorTn = localVariableDeclarationStatement(variables, variablesArray);
-    
 
         } else {
             valorTn = statement(variables, variablesArray, n);
@@ -553,9 +557,8 @@ public class Generador {
         x = r.nextInt(100);
         PolynomialFunction valorTn = valorIdentC;
 
-            valorTn = localVariableDeclaration(variables, variablesArray);
-            codigo += ";\n";
-        
+        valorTn = localVariableDeclaration(variables, variablesArray);
+        codigo += ";\n";
 
         return valorTn;
     }
@@ -577,7 +580,6 @@ public class Generador {
     public PolynomialFunction statement(ArrayList<String> variables, ArrayList<String> variablesArray, int n) {
         x = r.nextInt(100);
         PolynomialFunction valorTn;
-       
 
         if (n < complex1 && cantFor > 0) {
             cantFor--;
@@ -597,12 +599,18 @@ public class Generador {
             cantWhile--;
             n++;
 
-            valorTn = whileStatementN(variables, variablesArray, n,false);
+            valorTn = whileStatementN(variables, variablesArray, n, false);
         } else {
+           //comprobacion para asegurar llegar al grado minimo
+            if (complex1 > n && obligatorio) {
+                n++;
+                obligatorio=false;
+                valorTn = whileStatementN(variables, variablesArray, n, false);
 
-            valorTn = statementWithoutTrailingSubstatement(variables, variablesArray, n);
+            } else {
+                valorTn = statementWithoutTrailingSubstatement(variables, variablesArray, n);
+            }
         }
-
 
         return valorTn;
     }
@@ -713,9 +721,8 @@ public class Generador {
         codigo += "else\n";
         valorTE = block(variables, variablesArray, 0, false, n);
         valorTn = valorTn.add(maxFunction(valorTI, valorTE));
-        
-        methodCollection.get(methodCollection.size() - 1).getValores().add("IfElse->"+valorTn.toString());
-     
+
+        methodCollection.get(methodCollection.size() - 1).getValores().add("IfElse->" + valorTn.toString());
 
         return valorTn;
     }
@@ -729,9 +736,8 @@ public class Generador {
         codigo += ")\n";
         valorTn = valorTn.add(block(variables, variablesArray, 0, false, n));
 
-        methodCollection.get(methodCollection.size() - 1).getValores().add("If->"+valorTn.toString());
+        methodCollection.get(methodCollection.size() - 1).getValores().add("If->" + valorTn.toString());
 
-        
         return valorTn;
     }
 
@@ -744,9 +750,8 @@ public class Generador {
         codigo += ")\n";
         valorTn = valorTn.add(switchBlock(variables, variablesArray, n));
         codigo += "\n";
-        
-        methodCollection.get(methodCollection.size() - 1).getValores().add("Switch->"+valorTn.toString());
 
+        methodCollection.get(methodCollection.size() - 1).getValores().add("Switch->" + valorTn.toString());
 
         return valorTn;
     }
@@ -842,7 +847,7 @@ public class Generador {
         return valorTn;
     }
 
-    public PolynomialFunction whileStatementN(ArrayList<String> variables, ArrayList<String> variablesArray, int n,boolean log) {
+    public PolynomialFunction whileStatementN(ArrayList<String> variables, ArrayList<String> variablesArray, int n, boolean log) {
 
         PolynomialFunction valorTn, valorTe, valorTB, valorTs;
 
@@ -853,20 +858,17 @@ public class Generador {
         codigo += "\nwhile" + "(";
         valorTe = expressionWhile(variables, variablesArray, 2);
         codigo += ")\n";
-        
-        if(log){
+
+        if (log) {
             valorTB = valorTe.multiply(block(variables, variablesArray, 0, true, n));
-        }else{
+        } else {
             valorTB = valorTe.multiply(block(variables, variablesArray, 0, false, n));
         }
 
-        
-
         valorTn = valorTe.add(valorTB).add(valorIdent).add(valorTs);
-        
-        methodCollection.get(methodCollection.size() - 1).getValores().add("whileN->"+valorTn.toString());
 
-        
+        methodCollection.get(methodCollection.size() - 1).getValores().add("whileN->" + valorTn.toString());
+
         return valorTn;
     }
 
@@ -883,9 +885,8 @@ public class Generador {
         methodCollection.get(methodCollection.size() - 1).setLog(true);
 
         funcLog = valorTe.add(block(variables, variablesArray, 1, false, 0));
-        
-        methodCollection.get(methodCollection.size() - 1).getValores().add("whileL->"+funcLog.toString());
-     
+
+        methodCollection.get(methodCollection.size() - 1).getValores().add("whileL->" + funcLog.toString());
 
         return funcLog;
 
@@ -928,12 +929,12 @@ public class Generador {
         codigo += ")\n";
 
         valorTn = valorTn.add(repeticionFor.multiply(block(variables2, variablesArray2, 0, false, n)));
- 
-        methodCollection.get(methodCollection.size() - 1).getValores().add("For->"+valorTn.toString());
- 
+
+        methodCollection.get(methodCollection.size() - 1).getValores().add("For->" + valorTn.toString());
 
         return valorTn;
     }
+
     public PolynomialFunction forStatementE(ArrayList<String> variables, ArrayList<String> variablesArray, int n) {
         PolynomialFunction valorTn;
 
@@ -950,10 +951,8 @@ public class Generador {
         codigo += "for(i = 1 ; i <= Math.pow( 2, n ) ; i++)\n";
         valorTn = valorIdent;
         methodCollection.get(methodCollection.size() - 1).setExp(true);
-        funcExp= valorTn.add(valorIdent.multiply(block(variables2, variablesArray2, 0, false, complex1)));
-        methodCollection.get(methodCollection.size() - 1).getValores().add("forE->"+valorTn.toString());
-
-        
+        funcExp = valorTn.add(valorIdent.multiply(block(variables2, variablesArray2, 0, false, complex1)));
+        methodCollection.get(methodCollection.size() - 1).getValores().add("forE->" + valorTn.toString());
 
         return valorTn;
     }
@@ -1885,7 +1884,7 @@ public class Generador {
 
     public PolynomialFunction maxFunction(PolynomialFunction f1, PolynomialFunction f2) {
         PolynomialFunction valorTn = valorIdentC;
-          
+
         if (f1.degree() > f2.degree()) {
             valorTn = valorTn.add(f1);
         } else if (f1.degree() < f2.degree()) {
@@ -1894,7 +1893,6 @@ public class Generador {
             double[] c = f1.getCoefficients();
             double[] d = f2.getCoefficients();
             for (int i = f1.degree(); i >= 0; i--) {
-
 
                 if (c[i] >= d[i]) {
                     valorTn = (f1);
@@ -1907,12 +1905,24 @@ public class Generador {
             }
 
         }
-   
+
         return valorTn;
     }
 
     public ArrayList<Method> getMethodCollection() {
         return methodCollection;
     }
-    
+/*
+    public void generarValores(Method m) {
+        listaValores.add(m.valor());
+        listaValores.add(m.valorModificado().get(0));
+        listaValores.add(m.valorModificado().get(1));
+        listaValores.add(m.valorModificado().get(2));
+
+    }*/
+
+    public ArrayList<String> getListaValores() {
+        return listaValores;
+    }
+
 }

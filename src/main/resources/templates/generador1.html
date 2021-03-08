@@ -37,46 +37,138 @@
                 table{
                     table-layout: fixed;
                 }
-                input {
-                    width: 100%;
-                    text-align: center;
-                    padding: 12px 20px;                  
-                    display: inline-block;
-                    border: 1px solid #ccc;
+
+                .radio input[type=radio] {
+                    display: none;
 
                 }
 
+                .radio label {
+                    display: block;
+                    text-align: center;
+                    margin: 4px;
+                    padding: 8px;
+                    background:  #FFFFFF;
+                    color: #000000;
+
+                }
+
+                .radio label:hover {
+                    background: #808080;
+                }
+
+                .radio input[type=radio]:checked+label {
+                    background: #000000;
+                    color: #FFFFFF;
+                }
+                .radio button {
+
+                    color:#FFFFFF ;
+                    background-color: #006600;
+                    padding: 14px 20px;
+                    margin: 8px 0;
+                    border: none;
+                    cursor: pointer;
+                    width: 75%;
+
+                }
+
+                .radio button:hover {
+                    opacity: 0.8;
+                }
             </style>
     </head>
     <body>
-      <!--  <form th:action="@{/generador1}" th:object="${generador}" method="POST" enctype="utf8">-->
+        <!--  <form th:action="@{/generador1}" th:object="${generador}" method="POST" enctype="utf8">-->
+       <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+            <a class="navbar-brand" th:href="@{/}">GenTool</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="collapsibleNavbar">
+                <ul class="navbar-nav">                  
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/generador}">Generador</a>
+                    </li>
+                    <li  sec:authorize="hasAuthority('Profesor')" class="nav-item">
+                        <a class="nav-link" th:href="@{/users}">Usuarios</a>
+                    </li>
+                    <li  sec:authorize="isAuthenticated()" class="nav-item">
+                        <a class="nav-link" th:href="@{/generadorAlumno}">Ej. Propuestos</a>
+                    </li>
 
+                </ul>
+                </div>  
+                    <ul class="nav navbar-nav navbar-right">
+                         <li sec:authorize="!isAuthenticated()">
+                             <a th:href="@{/login}" style="color:#508723">Login</a>
+                        </li>
+                        <li sec:authorize="isAuthenticated()">
+                            <a th:href="@{/logout}" style="color:#cc0000">Logout</a>
+                        </li>
+                    </ul>          
+        </nav>
 
-            <table class="table table-striped table-bordered">
+        <table class="table table-striped table-bordered">
 
-                <thead class="thead-dark">
+            <thead class="thead-dark">
 
-                    <tr>
-                        <th>Codigo</th>
-                        <th>Tiempo Ejecucion</th>
-                        <th>Explicacion</th>
+                <tr>
+                    <th>Codigo</th>
+                    <th>Tiempo Ejecucion</th>
+                    <th>Explicacion</th>
 
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr th:each="codigo : ${generador.getMethodCollection}">
-                        <td style="text-align:left" > <pre th:text="${codigo.getCodigo()}"> </td>
-                        <td ><input type="text" /></td>
-                        <td ><pre class= "explicacion" style="display:none;"th:text="${codigo.correccion()}"></td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="codigo,i : ${generador.getMethodCollection()}">
+                    <td style="text-align:left" > <pre th:text="${codigo.getCodigo()}"> </td>
+                        <td  >
+                            <div class="radio">
+                                <div class="opciones">
+                                <input  type="radio" name="opcion" id="opcion1" value="1"  />
+                                <label  for="opcion1"th:text="${codigo.getLista().get(0)}">   </label>
+                              
+                                <input  type="radio" name="opcion" id="opcion2" value="2" />
+                                <label  for="opcion2" th:text="${codigo.getLista().get(1)}">  </label>
+                                                         
+                                 <input   type="radio" name="opcion" id="opcion3" value=th:text="${codigo.getLista().get(2)}"  />
+                                <label  for="opcion3" th:text="${codigo.getLista().get(2)}" > </label>
+                             
+                                 <input   type="radio" name="opcion" id="opcion4"  value="${codigo.getLista().get(3)}" />
+                                <label  for="opcion4" th:text="${codigo.getLista().get(3)}">  </label>
+                                </div>
+                                <button onclick="funcionMostrar()" >Corregir</button>
+                              </div>
+                            
+                        </td>
+                        <td ><pre id="explicacion" class= "explicacion" style = "display:none"  th:text="${codigo.correccion()}"> </td>
 
 
                     </tr>
                 </tbody>
             </table> 
-
-            <button >Corregir</button>
-            <!--<input type="submit" value="corregir" />-->
+        <script>
+            function funcionMostrar() {
+                var x = document.getElementById("explicacion");
+                if (x.style.display === "none") {
+                    x.style.display = "block";
+                } 
+                var y= document.getElementById("opcion3");
+                console.log(y.value);
+                console.log("ss");
+                
+            }
+            </script>
+            
+            
+            <!--<input type="submit" value="corregir" />    <button >Corregir</button>              style="display:none;  
+            
+            
             <p>Click <a th:href="@{/home}">aqui</a> para volver al inicio .</p>
+            
+            -->
+            
                <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
             <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
        <!-- </form>-->

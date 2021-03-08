@@ -46,49 +46,77 @@
                 </style>
         </head>
         <body>
+            <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+                <a class="navbar-brand" th:href="@{/}">GenTool</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="collapsibleNavbar">
+                    <ul class="navbar-nav">                  
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/generador}">Generador</a>
+                        </li>
+                        <li  sec:authorize="hasAuthority('Profesor')" class="nav-item">
+                            <a class="nav-link" th:href="@{/users}">Usuarios</a>
+                        </li>
+                        <li  sec:authorize="isAuthenticated()" class="nav-item">
+                            <a class="nav-link" th:href="@{/generadorAlumno}">Ej. Propuestos</a>
+                        </li>
+
+                    </ul>
+                </div>  
+                <ul class="nav navbar-nav navbar-right">
+                    <li sec:authorize="!isAuthenticated()">
+                        <a th:href="@{/login}" style="color:#508723">Login</a>
+                    </li>
+                    <li sec:authorize="isAuthenticated()">
+                        <a th:href="@{/logout}" style="color:#cc0000">Logout</a>
+                    </li>
+                </ul>          
+            </nav>
             <h1> Crear Nuevo Usuario</h1>
             <form th:action="@{/newuser}" th:object="${user}" method="POST" enctype="utf8">
-                
+
                 <div class="parametros m-2 ">
-                <div class="form-group">
-                    <label for="username">Usuario:</label>
-                    <input th:field="*{username}" placeholder="Introduzca nuevo nombre usuario" required/>
-                    <p th:each="error: ${#fields.errors('username')}" 
-                       th:text="${error}">Validation error</p>
-                </div>
-                <div class="form-group">
-                    <label for="password">Contraseña:</label>
-                    <input th:field="*{password}" placeholder="Introduzca nueva Contraseña" required/>
-                    <p th:each="error: ${#fields.errors('password')}" 
-                       th:text="${error}">Validation error</p>
-                </div>
-                <div class="form-group">
-                    <label for="complex">Complejidad:</label>
-                    <select th:field="*{complex_u}">
-                        <option value="constante" >Constante</option>
-                        <option value="logaritmica" >Logaritmica</option>
-                        <option value="lineal" >Lineal</option>
-                        <option value="nlog" >nlog</option>
-                        <option value="cuadratica" >Cuadratica</option>
-                        <option value="cubica" >Cubica</option>
-                        <option value="exponencial" >Exponencial</option>
-                        <option value="ninguna" >Ninguna</option>
-                    </select>
-                    <p th:each="error: ${#fields.errors('complex_u')}" 
-                       th:text="${error}">Validation error</p>
+                    <div class="form-group">
+                        <label for="username">Usuario:</label>
+                        <input th:field="*{username}" placeholder="Introduzca nuevo nombre usuario" required/>
+                        <p th:each="error: ${#fields.errors('username')}" 
+                           th:text="${error}">Validation error</p>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Contraseña:</label>
+                        <input th:field="*{password}" placeholder="Introduzca nueva Contraseña" required/>
+                        <p th:each="error: ${#fields.errors('password')}" 
+                           th:text="${error}">Validation error</p>
+                    </div>
+                    <div class="form-group">
+                        <label for="complex">Complejidad:</label>
+                        <select th:field="*{complex_u}">
+                            <option value="constante" >Constante</option>
+                            <option value="logaritmica" >Logaritmica</option>
+                            <option value="lineal" >Lineal</option>
+                            <option value="nlog" >nlog</option>
+                            <option value="cuadratica" >Cuadratica</option>
+                            <option value="cubica" >Cubica</option>
+                            <option value="exponencial" >Exponencial</option>
+                            <option value="ninguna" >Ninguna</option>
+                        </select>
+                        <p th:each="error: ${#fields.errors('complex_u')}" 
+                           th:text="${error}">Validation error</p>
 
-                </div>
-                <div class="form-group">
-                    <label for="Rol">Rol:</label>
-                    <select th:field="*{rol_u}">
-                        <option value="Profesor" >Profesor</option>
-                        <option value="Alumno" >Alumno</option>
-                    </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="Rol">Rol:</label>
+                        <select th:field="*{rol_u}">
+                            <option value="Profesor" >Profesor</option>
+                            <option value="Alumno" >Alumno</option>
+                        </select>
 
-                    <p th:each="error: ${#fields.errors('rol_u')}" 
-                       th:text="${error}">Validation error</p>
+                        <p th:each="error: ${#fields.errors('rol_u')}" 
+                           th:text="${error}">Validation error</p>
 
-                </div>
+                    </div>
 
                 </div>
 

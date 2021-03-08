@@ -40,7 +40,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			.authorizeRequests()
                                 .antMatchers("/webjars/**").permitAll()
                                 .antMatchers("/users", "/newuser","/deleteuser/*","/updateuser/*").hasAuthority("Profesor")
-                                .antMatchers("/generadorAlumno").hasAuthority("Alumno")
+                                //.antMatchers("/generadorAlumno").hasAuthority("Alumno")
                                 .antMatchers("/", "/home","/generador","/generador1/*/*/*/*/*").permitAll()
 
                                 .anyRequest().authenticated()
@@ -52,7 +52,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                                 .passwordParameter("password")
 				.and()
 			.logout()
-                                .logoutSuccessUrl("/home")
+                                .logoutSuccessUrl("/generador")
 				.permitAll();
                 
 

@@ -54,22 +54,27 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="collapsibleNavbar">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/info}">Informacion</a>
-                    </li>
+                <ul class="navbar-nav">                  
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{/generador}">Generador</a>
                     </li>
+                    <li  sec:authorize="hasAuthority('Profesor')" class="nav-item">
+                        <a class="nav-link" th:href="@{/users}">Usuarios</a>
+                    </li>
+                    <li  sec:authorize="isAuthenticated()" class="nav-item">
+                        <a class="nav-link" th:href="@{/generadorAlumno}">Ej. Propuestos</a>
+                    </li>
 
                 </ul>
-                <div>
+                </div>  
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a th:href="@{/login}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-
-                    </ul>
-                </div>
-            </div>  
+                         <li sec:authorize="!isAuthenticated()">
+                             <a th:href="@{/login}" style="color:#508723">Login</a>
+                        </li>
+                        <li sec:authorize="isAuthenticated()">
+                            <a th:href="@{/logout}" style="color:#cc0000">Logout</a>
+                        </li>
+                    </ul>          
         </nav>
         <h1>Generar Codigo</h1>
         <form th:action="@{/generador}"  method="Post">

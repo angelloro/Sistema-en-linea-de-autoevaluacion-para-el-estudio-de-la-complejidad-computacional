@@ -37,6 +37,34 @@
             </style>
     </head>
     <body>
+        <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+            <a class="navbar-brand" th:href="@{/}">GenTool</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="collapsibleNavbar">
+                <ul class="navbar-nav">                  
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/generador}">Generador</a>
+                    </li>
+                    <li  sec:authorize="hasAuthority('Profesor')" class="nav-item">
+                        <a class="nav-link" th:href="@{/users}">Usuarios</a>
+                    </li>
+                    <li  sec:authorize="isAuthenticated()" class="nav-item">
+                        <a class="nav-link" th:href="@{/generadorAlumno}">Ej. Propuestos</a>
+                    </li>
+
+                </ul>
+                </div>  
+                    <ul class="nav navbar-nav navbar-right">
+                         <li sec:authorize="!isAuthenticated()">
+                             <a th:href="@{/login}" style="color:#508723">Login</a>
+                        </li>
+                        <li sec:authorize="isAuthenticated()">
+                            <a th:href="@{/logout}" style="color:#cc0000">Logout</a>
+                        </li>
+                    </ul>          
+        </nav>
         <h1 th:inline="text">Lista de usuarios</h1>
 
         <div class="tablaUsuarios m-2">
@@ -70,12 +98,12 @@
             </table> 
 
         </div>
-            <form th:action="@{/users}" th:object="${user}" method="POST" enctype="utf8">
-                <div class="text-center btn-lg">
-                    <button type="newUser" >Crear Usuario</button>
-                </div>
-            </form>
-            <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
-            <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+        <form th:action="@{/users}" th:object="${user}" method="POST" enctype="utf8">
+            <div class="text-center btn-lg">
+                <button type="newUser" >Crear Usuario</button>
+            </div>
+        </form>
+        <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+        <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
     </body>
 </html>
