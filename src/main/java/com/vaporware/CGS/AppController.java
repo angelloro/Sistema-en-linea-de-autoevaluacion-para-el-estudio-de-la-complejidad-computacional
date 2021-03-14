@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class AppController {
+
     Generador g;
 
     @Autowired
@@ -69,7 +70,7 @@ public class AppController {
     }
 
     @PostMapping("/newuser")
-    public void processRegister(@ModelAttribute("user") User user,HttpServletResponse response) throws IOException {
+    public void processRegister(@ModelAttribute("user") User user, HttpServletResponse response) throws IOException {
 
         userRepository.save(user);
         String path = "/users";
@@ -78,12 +79,12 @@ public class AppController {
     }
 
     @GetMapping("/deleteuser/{username}")
-    public void deleteSuccessful(@PathVariable(value = "username") String username,HttpServletResponse response)throws IOException {
+    public void deleteSuccessful(@PathVariable(value = "username") String username, HttpServletResponse response) throws IOException {
 
         userRepository.delete(userRepository.findByUserName(username));
         String path = "/users";
         response.sendRedirect(path);
-       // return "users";
+        // return "users";
     }
 
     @GetMapping("/updateuser/{username}")
@@ -95,7 +96,7 @@ public class AppController {
     }
 
     @PostMapping("/updateuser/{username}")
-    public void  updateSuccessful(@ModelAttribute("user") User user, @PathVariable(value = "username") String username,HttpServletResponse response)throws IOException {
+    public void updateSuccessful(@ModelAttribute("user") User user, @PathVariable(value = "username") String username, HttpServletResponse response) throws IOException {
         User userUp = userRepository.findByUserName(username);
         userUp.setUsername(user.getUsername());
         userUp.setPassword(user.getPassword());
@@ -121,46 +122,52 @@ public class AppController {
     }
 
     @PostMapping("/generador")
-    public void upGenerador(String complex, HttpServletResponse response, int var, int varA, int bucles) throws IOException {
+    public void upGenerador(String complex, HttpServletResponse response, int var, int varA, int bucles,int buclesMin) throws IOException {
 
         String path = "generador1/" + complex;
-        path += "/"  + var + "/" + varA + "/" + bucles;
+        path += "/" + var + "/" + varA + "/" + bucles+"/"+buclesMin;
         response.sendRedirect(path);
 
     }
 
-    @GetMapping("/generador1/{complex}/{var}/{varA}/{bucles}")
-    public String generador1(Model model,@PathVariable("complex") String complex, @PathVariable("var") String var,
-                             @PathVariable("varA") String varA, @PathVariable("bucles") String bucles) {
-        
-        g = new Generador(1, Integer.parseInt(var), Integer.parseInt(varA), Integer.parseInt(bucles), complex);
+    @GetMapping("/generador1/{complex}/{var}/{varA}/{bucles}/{buclesMin}")
+    public String generador1(Model model, @PathVariable("complex") String complex, @PathVariable("var") String var,
+            @PathVariable("varA") String varA, @PathVariable("bucles") String bucles,@PathVariable("buclesMin") String buclesMin) {
+
+        g = new Generador(1, Integer.parseInt(var), Integer.parseInt(varA), Integer.parseInt(bucles),Integer.parseInt(buclesMin), complex);
 
         model.addAttribute("generador", g.getMethodCollection().get(0));
         return "generador1";
     }
 
     @PostMapping("/generador1")
-    public void upGenerador1( String complex) {
-       // System.out.println(g.imprimir());
+    public void upGenerador1(String complex) {
+        // System.out.println(g.imprimir());
 
     }
-    
-    
+
     @GetMapping("/generadorAlumno")
     public void generadorAlumno(HttpServletResponse response, Principal principal) throws IOException {
 
         User user = userRepository.findByUserName(principal.getName());
         String path = "generador1/" + user.getComplex_u();
         Random r = new Random();
-        path += "/" +  String.valueOf(r.nextInt(20)+1) + "/" +  String.valueOf(r.nextInt(20)+1) + "/" +  String.valueOf(r.nextInt(5)+1);
-        if(user.getComplex_u().equals("ninguna")){
-            response.sendRedirect("generador/");
-            
-        }else{
-           response.sendRedirect(path); 
-        }
-        
+        path += "/" + String.valueOf(r.nextInt(20) + 1) + "/" + String.valueOf(r.nextInt(20) + 1) + "/" + String.valueOf(r.nextInt(5) + 1);
+        if (user.getComplex_u().equals("ninguna")) {
+            response.sendRedirect("ninguna/");
 
+        } else {
+            response.sendRedirect(path);
+        }
+
+    }
+
+    @GetMapping("/ninguna")
+    public String ningunOrden(Model model, Principal principal) {
+
+        String nombre = principal.getName(); //get logged in username
+        model.addAttribute("nombre", nombre);
+        return "ninguna";
     }
 
 }

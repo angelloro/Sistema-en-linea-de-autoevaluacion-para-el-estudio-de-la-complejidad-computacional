@@ -33,6 +33,7 @@ public class Generador {
     private int cantidadVar, cantidadVarA, maxVar, maxVarA;
 
     private int numeroMaximo;
+    private int numeroMinimo;
     private int cantIfElse;
     private int cantIf;
     private int cantWhile;
@@ -46,14 +47,15 @@ public class Generador {
 
     private int complex1;
 
-    public Generador(int methodN, int var, int varA, int cantMax, String Complex) {
+    public Generador(int methodN, int var, int varA, int cantMax, int cantMin, String Complex) {
 
         r = new Random();
         cantidadMethod = methodN;
         maxVar = var;
         maxVarA = varA;
         numeroMaximo = cantMax;
-        restartStats(numeroMaximo);
+        numeroMinimo = cantMin;
+        restartStats(numeroMaximo,numeroMinimo);
         this.Complex = Complex;
         constructor(Complex);
 
@@ -224,7 +226,7 @@ public class Generador {
             m.setTnExp(funcExp);
 
             m.valorModificado();
-            restartStats(numeroMaximo);
+            restartStats(numeroMaximo,numeroMinimo);
             valorTn = valorIdentC;
 
         }
@@ -1874,12 +1876,14 @@ public class Generador {
         return codigo;
     }
 
-    public void restartStats(int n) {
-        cantIfElse = n;
-        cantIf = n;
-        cantWhile = n;
-        cantFor = n;
-        cantSwitch = n;
+    public void restartStats(int max,int min) {
+       
+        cantIfElse = r.nextInt(max-min+1)+min;
+        cantIf = r.nextInt(max-min+1)+min;
+        cantWhile = r.nextInt(max-min+1)+min;
+        cantFor = r.nextInt(max-min+1)+min;
+        cantSwitch = r.nextInt(max-min+1)+min;
+        
     }
 
     public PolynomialFunction maxFunction(PolynomialFunction f1, PolynomialFunction f2) {
