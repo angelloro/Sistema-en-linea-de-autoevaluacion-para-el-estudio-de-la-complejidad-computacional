@@ -30,13 +30,7 @@
                 button:hover {
                     opacity: 0.8;
                 }
-                .table td {
-                    vertical-align:middle;
 
-                }
-                table{
-                    table-layout: fixed;
-                }
 
                 .radio input[type=radio] {
                     display: none;
@@ -44,12 +38,14 @@
                 }
 
                 .radio label {
-                    display: block;
+
+                    display: inline-block;
                     text-align: center;
                     margin: 4px;
                     padding: 8px;
                     background:  #FFFFFF;
                     color: #000000;
+                    width: 75%;
 
                 }
 
@@ -60,6 +56,10 @@
                 .radio input[type=radio]:checked+label {
                     background: #000000;
                     color: #FFFFFF;
+                    border-style: solid;
+                    border-color: #efb810;
+                    border-width: 3px;
+
                 }
                 .radio button {
 
@@ -69,18 +69,70 @@
                     margin: 8px 0;
                     border: none;
                     cursor: pointer;
-                    width: 75%;
+                    width: 65%;
 
                 }
 
                 .radio button:hover {
                     opacity: 0.8;
                 }
+
+                .modal {
+                    display: none; /* Hidden by default */
+                    position: fixed; /* Stay in place */                   
+                    padding-top: 100px; /* Location of the box */                   
+                    width: 100%; /* Full width */
+                    height: 100%; /* Full height */
+                    overflow: auto; /* Enable scroll if needed */
+                    background-color: rgb(0,0,0); /* Fallback color */
+                    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+                }
+
+                .modal-content {
+                    
+                    position: relative;
+                    background-color: #FFFFFF;
+                    margin: auto;
+                    padding: 0;
+                    border: 1px solid #888;
+                    width: 70%;       
+                   
+                   
+
+                }
+                .close {
+
+                    color: white;
+                    float: right;
+                    font-size: 28px;
+                    font-weight: bold;
+                }
+
+                .close:hover,
+                .close:focus {
+                    color: #FFFFFF;
+                    text-decoration: none;
+                    cursor: pointer;
+                }
+
+                .modal-header {
+                    
+                   
+                    padding: 2px 16px;
+                    background-color: #000000;
+                    color: white;
+                }
+                
+
+                .modal-body {padding: 2px 16px;}
+                
+
+
             </style>
     </head>
     <body>
         <!--  <form th:action="@{/generador1}" th:object="${generador}" method="POST" enctype="utf8">-->
-       <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+        <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
             <a class="navbar-brand" th:href="@{/}">GenTool</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
                 <span class="navbar-toggler-icon"></span>
@@ -98,69 +150,121 @@
                     </li>
 
                 </ul>
-                </div>  
-                    <ul class="nav navbar-nav navbar-right">
-                         <li sec:authorize="!isAuthenticated()">
-                             <a th:href="@{/login}" style="color:#508723">Login</a>
-                        </li>
-                        <li sec:authorize="isAuthenticated()">
-                            <a th:href="@{/logout}" style="color:#cc0000">Logout</a>
-                        </li>
-                    </ul>          
+            </div>  
+            <ul class="nav navbar-nav navbar-right">
+                <li sec:authorize="!isAuthenticated()">
+                    <a th:href="@{/login}" style="color:#508723">Login</a>
+                </li>
+                <li sec:authorize="isAuthenticated()">
+                    <a th:href="@{/logout}" style="color:#cc0000">Logout</a>
+                </li>
+            </ul>          
         </nav>
 
-        <table class="table table-striped table-bordered">
 
-            <thead class="thead-dark">
+        <div>
+            <pre style="text-align:left" th:text="${generador.getCodigo()}">
+        </div>
+             <div class="radio">
+                <div class="opciones">
+                <input  type="radio" name="opcion" id="opcion1"  th:value="${generador.getLista().get(0)}" />
+                <label name="label" for="opcion1"th:text="${generador.getLista().get(0)}"  >   </label>
 
-                <tr>
-                    <th>Codigo</th>
-                    <th>Tiempo Ejecucion</th>
-                    <th>Explicacion</th>
+                <input  type="radio" name="opcion" id="opcion2" th:value="${generador.getLista().get(1)}" />
+                <label name="label" for="opcion2" th:text="${generador.getLista().get(1)}" >  </label>
 
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="codigo,i : ${generador.getMethodCollection()}">
-                    <td style="text-align:left" > <pre th:text="${codigo.getCodigo()}"> </td>
-                        <td  >
-                            <div class="radio">
-                                <div class="opciones">
-                                <input  type="radio" name="opcion" id="opcion1" value="1"  />
-                                <label  for="opcion1"th:text="${codigo.getLista().get(0)}">   </label>
-                              
-                                <input  type="radio" name="opcion" id="opcion2" value="2" />
-                                <label  for="opcion2" th:text="${codigo.getLista().get(1)}">  </label>
-                                                         
-                                 <input   type="radio" name="opcion" id="opcion3" value=th:text="${codigo.getLista().get(2)}"  />
-                                <label  for="opcion3" th:text="${codigo.getLista().get(2)}" > </label>
-                             
-                                 <input   type="radio" name="opcion" id="opcion4"  value="${codigo.getLista().get(3)}" />
-                                <label  for="opcion4" th:text="${codigo.getLista().get(3)}">  </label>
-                                </div>
-                                <button onclick="funcionMostrar()" >Corregir</button>
-                              </div>
-                            
-                        </td>
-                        <td ><pre id="explicacion" class= "explicacion" style = "display:none"  th:text="${codigo.correccion()}"> </td>
+                <input   type="radio" name="opcion" id="opcion3" th:value="${generador.getLista().get(2)}"  />
+                <label name="label" for="opcion3" th:text="${generador.getLista().get(2)}" > </label>
 
-
-                    </tr>
-                </tbody>
-            </table> 
-        <script>
+                 <input   type="radio" name="opcion" id="opcion4"  th:value="${generador.getLista().get(3)}" />
+                <label name="label"  for="opcion4" th:text="${generador.getLista().get(3)}" >  </label>
+                </div>
+                <button id="boton" onclick="funcionMostrar()" >Corregir</button>
+              </div>
+        <script th:inline="javascript">
             function funcionMostrar() {
-                var x = document.getElementById("explicacion");
-                if (x.style.display === "none") {
-                    x.style.display = "block";
-                } 
-                var y= document.getElementById("opcion3");
-                console.log(y.value);
-                console.log("ss");
-                
+                var explicacion = document.getElementById("explicacion");
+                if (explicacion.style.display === "none") {
+                    explicacion.style.display = "block";
+                }
+                var boton = document.getElementById("boton");
+                boton.disabled = true;
+                var radio = document.getElementsByName("opcion");
+
+                var r = /*[[${generador.valor()}]]*/'default';
+                for (var i = 0; i < radio.length; i++) {
+                    radio[i].disabled = true;
+                    if (radio[i].checked) {
+
+
+
+                        if (r == radio[i].value) {
+                            document.getElementById("modal-head").innerHTML = "<h2>Has acertado</h2>  <span class='close'>&times;</span>";
+                            document.getElementById("modal-head").style.backgroundColor = "green";
+                            //var t = document.getElementById(radio[i].htmlFor);
+                            // console.log(t);
+                            //t.style.backgroundColor = "red";
+                        } else {
+                            document.getElementById("modal-head").innerHTML = " <h2>Has fallado</h2> <span class='close'>&times;</span>";
+                            document.getElementById("modal-head").style.backgroundColor = "#eb0000";
+                        }
+
+                    }
+
+                }
+                var labels = document.getElementsByName("label");
+                for (var c = 0; c < labels.length; c++) {
+
+
+                    var rad = document.getElementById(labels[c].htmlFor);
+
+                    if (r == rad.value) {
+                        labels[c].style.backgroundColor = "green";
+                    } else {
+                        labels[c].style.backgroundColor = "#eb0000";
+                    }
+
+
+                }
+                var modal = document.getElementById("myModal");
+
+                modal.style.display = "block";
+
+                var span = document.getElementsByClassName("close")[0];
+                //Cerrar modal al pulsar en la X
+                span.onclick = function () {
+                    modal.style.display = "none";
+                   
+                }
+                //Cerrar el modal al pulsar fuera del mismo
+                window.onclick = function (event) {
+                    if (event.target == modal) {
+                        modal.style.display = "none";
+
+                    }
+                }
             }
-            </script>
-            
+                </script>
+        <div id="myModal" class="modal">
+
+                <!-- Modal content -->
+                <div class="modal-content" >
+                  <div class="modal-header"id="modal-head">                      
+                      <h2>Ninguna opcion seleccionada</h2>
+                      <span class='close'>&times;</span>
+                  </div>
+                  <div class="modal-body" id="modal-body">
+                    <a class="btn  btn-block btn-dark" href="" role="button">Volver a generar codigo con los mismos valores</a> 
+                    <a class="btn  btn-block btn-dark" th:href="@{/generador}" role="button">Generar codigo diferente</a> 
+                  </div>
+
+                </div>
+         </div> 
+        <pre id="explicacion" class= "explicacion" style = "display:none"  th:text="${generador.correccion()}"> 
+
+     
+        
+          
             
             <!--<input type="submit" value="corregir" />    <button >Corregir</button>              style="display:none;  
             

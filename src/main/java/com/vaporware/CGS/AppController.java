@@ -121,21 +121,21 @@ public class AppController {
     }
 
     @PostMapping("/generador")
-    public void upGenerador(String complex, HttpServletResponse response, int metodos, int var, int varA, int bucles) throws IOException {
+    public void upGenerador(String complex, HttpServletResponse response, int var, int varA, int bucles) throws IOException {
 
         String path = "generador1/" + complex;
-        path += "/" + metodos + "/" + var + "/" + varA + "/" + bucles;
+        path += "/"  + var + "/" + varA + "/" + bucles;
         response.sendRedirect(path);
 
     }
 
-    @GetMapping("/generador1/{complex}/{metodos}/{var}/{varA}/{bucles}")
-    public String generador1(Model model,@PathVariable("complex") String complex, @PathVariable("metodos") String metodos, @PathVariable("var") String var,
+    @GetMapping("/generador1/{complex}/{var}/{varA}/{bucles}")
+    public String generador1(Model model,@PathVariable("complex") String complex, @PathVariable("var") String var,
                              @PathVariable("varA") String varA, @PathVariable("bucles") String bucles) {
         
-        g = new Generador(Integer.parseInt(metodos), Integer.parseInt(var), Integer.parseInt(varA), Integer.parseInt(bucles), complex);
+        g = new Generador(1, Integer.parseInt(var), Integer.parseInt(varA), Integer.parseInt(bucles), complex);
 
-        model.addAttribute("generador", g);
+        model.addAttribute("generador", g.getMethodCollection().get(0));
         return "generador1";
     }
 
@@ -152,9 +152,14 @@ public class AppController {
         User user = userRepository.findByUserName(principal.getName());
         String path = "generador1/" + user.getComplex_u();
         Random r = new Random();
-        path += "/"+ String.valueOf(r.nextInt(5)+1) + "/" +  String.valueOf(r.nextInt(20)+1) + "/" +  String.valueOf(r.nextInt(20)+1) + "/" +  String.valueOf(r.nextInt(5)+1);
-
-        response.sendRedirect(path);
+        path += "/" +  String.valueOf(r.nextInt(20)+1) + "/" +  String.valueOf(r.nextInt(20)+1) + "/" +  String.valueOf(r.nextInt(5)+1);
+        if(user.getComplex_u().equals("ninguna")){
+            response.sendRedirect("generador/");
+            
+        }else{
+           response.sendRedirect(path); 
+        }
+        
 
     }
 
