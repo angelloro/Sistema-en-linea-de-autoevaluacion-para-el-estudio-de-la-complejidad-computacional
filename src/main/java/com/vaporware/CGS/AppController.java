@@ -152,7 +152,8 @@ public class AppController {
         User user = userRepository.findByUserName(principal.getName());
         String path = "generador1/" + user.getComplex_u();
         Random r = new Random();
-        path += "/" + String.valueOf(r.nextInt(20) + 1) + "/" + String.valueOf(r.nextInt(20) + 1) + "/" + String.valueOf(r.nextInt(5) + 1);
+        int variables=r.nextInt(5) + 1;
+        path += "/" + String.valueOf(r.nextInt(20) + 1) + "/" + String.valueOf(r.nextInt(20) + 1) + "/" + String.valueOf(variables)+"/" + String.valueOf(r.nextInt(variables) + 1);
         if (user.getComplex_u().equals("ninguna")) {
             response.sendRedirect("ninguna/");
 

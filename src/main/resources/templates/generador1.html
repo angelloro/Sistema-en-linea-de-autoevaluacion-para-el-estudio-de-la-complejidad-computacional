@@ -7,7 +7,7 @@
         <title>CGS</title>
         <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" type="text/css">
             <style>
-                body {font-family: Arial, Helvetica, sans-serif;background: #808080; text-align: center;font-size: 20px}
+                body {font-family: Arial, Helvetica, sans-serif;background: #808080; text-align: center;font-size: 20px;}
                 h1{
                     color:#FFFFFF;
                 }
@@ -50,7 +50,7 @@
                 }
 
                 .radio label:hover {
-                    background: #808080;
+                    background: #909090;
                 }
 
                 .radio input[type=radio]:checked+label {
@@ -89,15 +89,15 @@
                 }
 
                 .modal-content {
-                    
+
                     position: relative;
                     background-color: #FFFFFF;
                     margin: auto;
                     padding: 0;
                     border: 1px solid #888;
                     width: 70%;       
-                   
-                   
+
+
 
                 }
                 .close {
@@ -116,16 +116,44 @@
                 }
 
                 .modal-header {
-                    
-                   
+
+
                     padding: 2px 16px;
                     background-color: #000000;
                     color: white;
                 }
-                
+
 
                 .modal-body {padding: 2px 16px;}
+
+                .codeArea{
+
+                    width: 100%;
+                    height: 770px;
+
+                    border-radius: 3px;
+                    text-align: left;
+                }
+                .CodeFlask{
+                    width: 100%;
+                    height: 770px;
+                    border-radius: 3px; 
+                }
+
+                .CodeFlask .CodeFlask__textarea {
+
+                    white-space: nowrap;
+                    overflow-x: hidden;
+                }
+
+                /* Fixes the issue */
+                .CodeFlask .CodeFlask__code {
+                    position: relative;
+                }
+
                 
+
+
 
 
             </style>
@@ -161,14 +189,44 @@
             </ul>          
         </nav>
 
+        <!--
+                <div>
+                    <code>
+                        <pre style="text-align:left" th:text="${generador.getCodigo()}"></pre>
+                    </code>
+                </div>-->
+        <div class="codeArea" id="codeArea"></div>
 
-        <div>
-            <code>
-                <pre style="text-align:left" th:text="${generador.getCodigo()}"></pre>
-                </code>
-        </div>
-             <div class="radio">
-                <div class="opciones">
+        <!-- <script src="https://unpkg.com/codeflask/build/codeflask.min.js"></script> 
+         <script th:inline="javascript">
+           
+             const flask = new CodeFlask('.codeArea', {language: 'java', lineNumbers: true, readonly: true});
+             flask.addLanguage('java', Prism.languages['java'])
+             let code = /*[[${generador.getCodigo()}]]*/'default';
+ 
+             flask.updateCode(code);
+         </script>
+        
+        -->
+        <script th:src="@{/webjars/ace/src/ace.js}"></script>
+        <script  th:inline="javascript">
+            var editor = ace.edit("codeArea");
+            editor.setTheme("ace/theme/eclipse");
+            editor.session.setMode("ace/mode/java");
+            editor.setOptions({
+                    fontFamily: "sans-serif",
+                        fontSize: "12pt"
+                });
+
+            let code = /*[[${generador.getCodigo()}]]*/'default';
+            editor.setValue(code);
+            editor.setReadOnly(true);
+            editor.clearSelection();
+            editor.gotoLine(0,0);
+        </script>
+        <p style="color:#FFFFFF"> Seleccione el tiempo de ejecucion del codigo:</p>
+        <div class="radio">
+            <div class="opciones">
                 <input  type="radio" name="opcion" id="opcion1"  th:value="${generador.getLista().get(0)}" />
                 <label name="label" for="opcion1"th:text="${generador.getLista().get(0)}"  >   </label>
 
@@ -178,11 +236,11 @@
                 <input   type="radio" name="opcion" id="opcion3" th:value="${generador.getLista().get(2)}"  />
                 <label name="label" for="opcion3" th:text="${generador.getLista().get(2)}" > </label>
 
-                 <input   type="radio" name="opcion" id="opcion4"  th:value="${generador.getLista().get(3)}" />
+                <input   type="radio" name="opcion" id="opcion4"  th:value="${generador.getLista().get(3)}" />
                 <label name="label"  for="opcion4" th:text="${generador.getLista().get(3)}" >  </label>
-                </div>
-                <button id="boton" onclick="funcionMostrar()" >Corregir</button>
-              </div>
+            </div>
+            <button id="boton" onclick="funcionMostrar()" >Corregir</button>
+        </div>
         <script th:inline="javascript">
             function funcionMostrar() {
                 var explicacion = document.getElementById("explicacion");
@@ -192,7 +250,6 @@
                 var boton = document.getElementById("boton");
                 boton.disabled = true;
                 var radio = document.getElementsByName("opcion");
-
                 var r = /*[[${generador.valor()}]]*/'default';
                 for (var i = 0; i < radio.length; i++) {
                     radio[i].disabled = true;
@@ -219,7 +276,6 @@
 
 
                     var rad = document.getElementById(labels[c].htmlFor);
-
                     if (r == rad.value) {
                         labels[c].style.backgroundColor = "green";
                     } else {
@@ -229,54 +285,50 @@
 
                 }
                 var modal = document.getElementById("myModal");
-
                 modal.style.display = "block";
-
                 var span = document.getElementsByClassName("close")[0];
                 //Cerrar modal al pulsar en la X
                 span.onclick = function () {
                     modal.style.display = "none";
-                   
                 }
                 //Cerrar el modal al pulsar fuera del mismo
                 window.onclick = function (event) {
                     if (event.target == modal) {
                         modal.style.display = "none";
-
                     }
                 }
             }
-                </script>
+        </script>
         <div id="myModal" class="modal">
 
-                <!-- Modal content -->
-                <div class="modal-content" >
-                  <div class="modal-header"id="modal-head">                      
-                      <h2>Ninguna opcion seleccionada</h2>
-                      <span class='close'>&times;</span>
-                  </div>
-                  <div class="modal-body" id="modal-body">
+            <!-- Modal content -->
+            <div class="modal-content" >
+                <div class="modal-header"id="modal-head">                      
+                    <h2>Ninguna opcion seleccionada</h2>
+                    <span class='close'>&times;</span>
+                </div>
+                <div class="modal-body" id="modal-body">
                     <a class="btn  btn-block btn-dark" href="" role="button">Volver a generar codigo con los mismos valores</a> 
                     <a class="btn  btn-block btn-dark" th:href="@{/generador}" role="button">Generar codigo diferente</a> 
-                  </div>
-
                 </div>
-         </div> 
+
+            </div>
+        </div> 
         <pre id="explicacion" class= "explicacion" style = "display:none"  th:text="${generador.correccion()}"> </pre>
 
-     
-        
-          
-            
-            <!--<input type="submit" value="corregir" />    <button >Corregir</button>              style="display:none;  
-            
-            
-            <p>Click <a th:href="@{/home}">aqui</a> para volver al inicio .</p>
-            
-            -->
-            
-               <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
-            <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
-       <!-- </form>-->
+
+
+
+
+        <!--<input type="submit" value="corregir" />    <button >Corregir</button>              style="display:none;  
+                             
+                             
+                             <p>Click <a th:href="@{/home}">aqui</a> para volver al inicio .</p>
+                             
+        -->
+
+        <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+        <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+        <!-- </form>-->
     </body>
 </html>

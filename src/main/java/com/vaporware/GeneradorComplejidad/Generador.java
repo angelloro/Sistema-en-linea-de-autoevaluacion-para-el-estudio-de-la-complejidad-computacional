@@ -28,7 +28,7 @@ public class Generador {
     private boolean funcnLog;
     private boolean obligatorio;
     ArrayList<Method> methodCollection = new ArrayList<Method>();
-    ArrayList<String> listaValores = new ArrayList<String>();
+    
 
     private int cantidadVar, cantidadVarA, maxVar, maxVarA;
 
@@ -1916,17 +1916,7 @@ public class Generador {
     public ArrayList<Method> getMethodCollection() {
         return methodCollection;
     }
-/*
-    public void generarValores(Method m) {
-        listaValores.add(m.valor());
-        listaValores.add(m.valorModificado().get(0));
-        listaValores.add(m.valorModificado().get(1));
-        listaValores.add(m.valorModificado().get(2));
 
-    }*/
 
-    public ArrayList<String> getListaValores() {
-        return listaValores;
-    }
 
 }

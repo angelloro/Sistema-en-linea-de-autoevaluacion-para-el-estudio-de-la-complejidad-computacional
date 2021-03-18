@@ -89,6 +89,17 @@
             <version>0.40</version>
         </dependency>
         
+
+        
+        <!-- https://mvnrepository.com/artifact/org.webjars/ace -->
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>ace</artifactId>
+            <version>07.31.2013</version>
+        </dependency>
+
+
+        
     </dependencies>
 
     <build>
