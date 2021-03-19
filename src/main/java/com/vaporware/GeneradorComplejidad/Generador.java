@@ -27,6 +27,8 @@ public class Generador {
     private boolean type;
     private boolean funcnLog;
     private boolean obligatorio;
+    
+    private boolean bucles;//Mediante esta variable se obliga a entrar en la produccion statement al menos una vez
     ArrayList<Method> methodCollection = new ArrayList<Method>();
     
 
@@ -193,6 +195,7 @@ public class Generador {
 
         PolynomialFunction valorTn = new PolynomialFunction(valorC);
         for (int i = 0; i < cantidadMethod; i++) {
+            bucles=true;
             cantidadVar = 0;
             cantidadVarA = 0;
             ArrayList<String> methodParams = new ArrayList<String>();
@@ -527,7 +530,7 @@ public class Generador {
         x = r.nextInt(100);
         PolynomialFunction valorTn;
 
-        if (x <= 70 || cont > 0) {
+        if (x <= 70 || cont > 0 ||bucles) {
             cont--;
             valorTn = blockStatement(variables, variablesArray, n);
             valorTn = valorTn.add(blockStatements(variables, variablesArray, n, cont));
@@ -549,6 +552,7 @@ public class Generador {
             valorTn = localVariableDeclarationStatement(variables, variablesArray);
 
         } else {
+            bucles=false;
             valorTn = statement(variables, variablesArray, n);
         }
 
@@ -950,7 +954,7 @@ public class Generador {
             variablesArray2.add(s);
 
         }
-        codigo += "for(i = 1 ; i <= Math.pow( 2, n ) ; i++)\n";
+        codigo += "for(int i = 1 ; i <= Math.pow( 2, n ) ; i++)\n";
         valorTn = valorIdent;
         methodCollection.get(methodCollection.size() - 1).setExp(true);
         funcExp = valorTn.add(valorIdent.multiply(block(variables2, variablesArray2, 0, false, complex1)));

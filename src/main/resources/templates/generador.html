@@ -66,15 +66,15 @@
                     </li>
 
                 </ul>
-                </div>  
-                    <ul class="nav navbar-nav navbar-right">
-                         <li sec:authorize="!isAuthenticated()">
-                             <a th:href="@{/login}" style="color:#508723">Login</a>
-                        </li>
-                        <li sec:authorize="isAuthenticated()">
-                            <a th:href="@{/logout}" style="color:#cc0000">Logout</a>
-                        </li>
-                    </ul>          
+            </div>  
+            <ul class="nav navbar-nav navbar-right">
+                <li sec:authorize="!isAuthenticated()">
+                    <a th:href="@{/login}" style="color:#508723">Login</a>
+                </li>
+                <li sec:authorize="isAuthenticated()">
+                    <a th:href="@{/logout}" style="color:#cc0000">Logout</a>
+                </li>
+            </ul>          
         </nav>
         <h1>Generar Codigo</h1>
         <form th:action="@{/generador}"  method="Post">
@@ -90,23 +90,23 @@
                 <option value="exponencial" >Exponencial</option>
             </select>
 
-            
-                <p>Cantidad variables:</p>  <input type="number" min="1" max="20" name="var"required> 
-                    <p>Cantidad variables Array:</p> <input type="number"  min="1" max="20" name="varA"required> 
-                        <p>Nº maximo bucles por tipo:</p> <input type="number" min="1" max="5" name="bucles" onchange="cambioMaxVal(this.value)"required>
-                            <p>Nº minimo bucles por tipo:</p> <input id="minNumber" type="number" min="1"  name="buclesMin"required>
-                                <script>
-                                    function cambioMaxVal(numMax){
+
+            <p>Cantidad variables:</p>  <input type="number" min="1" max="20" name="var"required> 
+                <p>Cantidad variables Array:</p> <input type="number"  min="1" max="20" name="varA"required> 
+                    <p>Nº maximo bucles por tipo:</p> <input type="number" min="1" max="5" name="bucles" onchange="cambioMaxVal(this.value)"required>
+                        <p>Nº minimo bucles por tipo:</p> <input id="minNumber" type="number" min="1"  name="buclesMin"required>
+                            <script>
+                                function cambioMaxVal(numMax) {
                                     var min = document.getElementById('minNumber');
-                                    
-                                    min.max=numMax;
-                                    
+
+                                    min.max = numMax;
+
                                 }
-                                    </script>
+                            </script>
                             <div class="text-center btn-lg">
                                 <button type="submit" >Generar</button>
                             </div>
-               
+
                             <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
                             <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
                             </form>
