@@ -31,7 +31,14 @@
                     opacity: 0.8;
                 }
 
-
+                .botonDiv{
+                     
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    min-height: 75vh;
+                    
+                }
                 .radio input[type=radio] {
                     display: none;
 
@@ -129,29 +136,23 @@
                 .codeArea{
 
                     width: 100%;
-                    height: 770px;
+                    height: 100%;
 
-                    border-radius: 3px;
+                    
                     text-align: left;
                 }
-                .CodeFlask{
+                .row{
                     width: 100%;
-                    height: 770px;
-                    border-radius: 3px; 
+                    height: 690px;
+                }
+                .col1{
+                    width: 55%;
+                }
+                 .col2{
+                    width: 45%;
                 }
 
-                .CodeFlask .CodeFlask__textarea {
 
-                    white-space: nowrap;
-                    overflow-x: hidden;
-                }
-
-                /* Fixes the issue */
-                .CodeFlask .CodeFlask__code {
-                    position: relative;
-                }
-
-                
 
 
 
@@ -195,51 +196,60 @@
                         <pre style="text-align:left" th:text="${generador.getCodigo()}"></pre>
                     </code>
                 </div>-->
-        <div class="codeArea" id="codeArea"></div>
+        <div class="row ">
+            <div class="col1">
+                <div class="codeArea" id="codeArea"></div>
+            </div>
 
-        <!-- <script src="https://unpkg.com/codeflask/build/codeflask.min.js"></script> 
-         <script th:inline="javascript">
-           
-             const flask = new CodeFlask('.codeArea', {language: 'java', lineNumbers: true, readonly: true});
-             flask.addLanguage('java', Prism.languages['java'])
-             let code = /*[[${generador.getCodigo()}]]*/'default';
- 
-             flask.updateCode(code);
-         </script>
-        
-        -->
-        <script th:src="@{/webjars/ace/src/ace.js}"></script>
-        <script  th:inline="javascript">
-            var editor = ace.edit("codeArea");
-            editor.setTheme("ace/theme/eclipse");
-            editor.session.setMode("ace/mode/java");
-            editor.setOptions({
+            <!-- <script src="https://unpkg.com/codeflask/build/codeflask.min.js"></script> 
+             <script th:inline="javascript">
+               
+                 const flask = new CodeFlask('.codeArea', {language: 'java', lineNumbers: true, readonly: true});
+                 flask.addLanguage('java', Prism.languages['java'])
+                 let code = /*[[${generador.getCodigo()}]]*/'default';
+     
+                 flask.updateCode(code);
+             </script>
+            
+            -->
+
+            <script th:src="@{/webjars/ace/src/ace.js}"></script>
+            <script  th:inline="javascript">
+                var editor = ace.edit("codeArea");
+                editor.setTheme("ace/theme/eclipse");
+                editor.session.setMode("ace/mode/java");
+                editor.setOptions({
                     fontFamily: "sans-serif",
-                        fontSize: "12pt"
+                    fontSize: "12pt"
                 });
 
-            let code = /*[[${generador.getCodigo()}]]*/'default';
-            editor.setValue(code);
-            editor.setReadOnly(true);
-            editor.clearSelection();
-            editor.gotoLine(0,0);
-        </script>
-        <p style="color:#FFFFFF"> Seleccione el tiempo de ejecucion del codigo:</p>
-        <div class="radio">
-            <div class="opciones">
-                <input  type="radio" name="opcion" id="opcion1"  th:value="${generador.getLista().get(0)}" />
-                <label name="label" for="opcion1"th:text="${generador.getLista().get(0)}"  >   </label>
+                let code = /*[[${generador.getCodigo()}]]*/'default';
+                editor.setValue(code);
+                editor.setReadOnly(true);
+                editor.clearSelection();
+                editor.gotoLine(0, 0);
+            </script>
+            <div class="col2">
+                <div class="botonDiv">                   
+                    <div class="radio">
+                        <p style="color:#FFFFFF"> Seleccione el tiempo de ejecucion del codigo:</p>
+                        <div class="opciones">
+                            <input  type="radio" name="opcion" id="opcion1"  th:value="${generador.getLista().get(0)}" />
+                            <label name="label" for="opcion1"th:text="${generador.getLista().get(0)}"  >   </label>
 
-                <input  type="radio" name="opcion" id="opcion2" th:value="${generador.getLista().get(1)}" />
-                <label name="label" for="opcion2" th:text="${generador.getLista().get(1)}" >  </label>
+                            <input  type="radio" name="opcion" id="opcion2" th:value="${generador.getLista().get(1)}" />
+                            <label name="label" for="opcion2" th:text="${generador.getLista().get(1)}" >  </label>
 
-                <input   type="radio" name="opcion" id="opcion3" th:value="${generador.getLista().get(2)}"  />
-                <label name="label" for="opcion3" th:text="${generador.getLista().get(2)}" > </label>
+                            <input   type="radio" name="opcion" id="opcion3" th:value="${generador.getLista().get(2)}"  />
+                            <label name="label" for="opcion3" th:text="${generador.getLista().get(2)}" > </label>
 
-                <input   type="radio" name="opcion" id="opcion4"  th:value="${generador.getLista().get(3)}" />
-                <label name="label"  for="opcion4" th:text="${generador.getLista().get(3)}" >  </label>
+                            <input   type="radio" name="opcion" id="opcion4"  th:value="${generador.getLista().get(3)}" />
+                            <label name="label"  for="opcion4" th:text="${generador.getLista().get(3)}" >  </label>
+                        </div>
+                        <button id="boton" onclick="funcionMostrar()" >Corregir</button>
+                    </div>
+                </div>
             </div>
-            <button id="boton" onclick="funcionMostrar()" >Corregir</button>
         </div>
         <script th:inline="javascript">
             function funcionMostrar() {
@@ -248,7 +258,7 @@
                     explicacion.style.display = "block";
                 }
                 var boton = document.getElementById("boton");
-                boton.disabled = true;
+               // boton.disabled = true;
                 var radio = document.getElementsByName("opcion");
                 var r = /*[[${generador.valor()}]]*/'default';
                 for (var i = 0; i < radio.length; i++) {
