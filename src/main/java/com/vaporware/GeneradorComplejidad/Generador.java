@@ -48,6 +48,10 @@ public class Generador {
     final private PolynomialFunction valorIdentC = new PolynomialFunction(valorC);
 
     private int complex1;
+    
+    //String utilizado para guardar la expresion del for y asi usarla en la explicacion
+    private String expFor;
+    private int linea;
 
     public Generador(int methodN, int var, int varA, int cantMax, int cantMin, String Complex) {
 
@@ -192,7 +196,7 @@ public class Generador {
 
     public PolynomialFunction methodDeclaration(int n) {
         contMethod = 0;
-
+        linea=0;
         PolynomialFunction valorTn = new PolynomialFunction(valorC);
         for (int i = 0; i < cantidadMethod; i++) {
             bucles=true;
@@ -498,6 +502,7 @@ public class Generador {
         }
         String codF = codigoF;
         codigo += "{\n";
+        linea++;
         PolynomialFunction valorTn = valorIdentC;
         if (opt == 3) {
             valorTn = valorTn.add(whileStatementN(variables, variablesArray, 0, true));
@@ -516,12 +521,14 @@ public class Generador {
 
         if (opt == 1) {
             codigo += codF + "*=" + "2" + ";\n";
+            linea++;
             valorTn = valorTn.add(valorIdent);
 
         } else if (opt == 2 || opt == 5) {
             valorTn = valorTn.add(returnStatement(variables, variablesArray));
         }
         codigo += "}\n";
+        linea++;
 
         return valorTn;
     }
@@ -565,6 +572,7 @@ public class Generador {
 
         valorTn = localVariableDeclaration(variables, variablesArray);
         codigo += ";\n";
+        linea++;
 
         return valorTn;
     }
@@ -644,6 +652,7 @@ public class Generador {
         PolynomialFunction valorTn = valorIdentC;
 
         codigo += ";\n";
+        linea++;
 
         return valorTn;
     }
@@ -653,6 +662,7 @@ public class Generador {
         PolynomialFunction valorTn = statementExpression(variables, variablesArray, n);
 
         codigo += ";\n";
+        linea++;
 
         return valorTn;
     }
@@ -719,16 +729,21 @@ public class Generador {
     public PolynomialFunction ifThenElseStatement(ArrayList<String> variables, ArrayList<String> variablesArray, int n) {
 
         PolynomialFunction valorTn, valorTI, valorTE;
-
-        codigo += "\nif" + "(";
-        valorTn = conditionalExpression(variables, variablesArray);
-        codigo += ")\n";
+        String codigo="";
+        codigo += "if" + "(";
+        codigo += conditionalExpression(variables, variablesArray);
+        codigo += ")";
+        this.codigo+=codigo+"\n";
+        linea++;
+        int lineaBucle=linea;
+        valorTn=valorIdent;
         valorTI = block(variables, variablesArray, 0, false, n);
-        codigo += "else\n";
+        this.codigo += "else\n";
+        linea++;
         valorTE = block(variables, variablesArray, 0, false, n);
         valorTn = valorTn.add(maxFunction(valorTI, valorTE));
         
-        methodCollection.get(methodCollection.size() - 1).getValores().add("IfElse->" + valorTn.toString());
+        methodCollection.get(methodCollection.size() - 1).getValores().add("\nLinea:"+lineaBucle+"-:-"+codigo+"/Else\n->" + valorTn.toString());
 
         return valorTn;
     }
@@ -736,13 +751,18 @@ public class Generador {
     public PolynomialFunction ifThenStatement(ArrayList<String> variables, ArrayList<String> variablesArray, int n) {
 
         PolynomialFunction valorTn;
-
-        codigo += "\nif" + "(";
-        valorTn = conditionalExpression(variables, variablesArray);
+        String codigo="";
+        codigo += "if" + "(";
+        codigo += conditionalExpression(variables, variablesArray);
         codigo += ")\n";
+        linea++;
+        int lineaBucle=linea;
+        this.codigo+=codigo;
+        valorTn=valorIdent;
+        
         valorTn = valorTn.add(block(variables, variablesArray, 0, false, n));
 
-        methodCollection.get(methodCollection.size() - 1).getValores().add("If->" + valorTn.toString());
+        methodCollection.get(methodCollection.size() - 1).getValores().add("\nLinea:"+lineaBucle+"-:-"+codigo+"->" + valorTn.toString());
 
         return valorTn;
     }
@@ -750,25 +770,39 @@ public class Generador {
     public PolynomialFunction switchStatement(ArrayList<String> variables, ArrayList<String> variablesArray, int n) {
 
         PolynomialFunction valorTn;
-
-        codigo += "\nswitch" + "(";
-        valorTn = switchExpression(variables, variablesArray);
+        String codigo="";
+        codigo += "switch" + "(";     
+        codigo += switchExpression(variables, variablesArray);
         codigo += ")\n";
+        linea++;
+        int lineaBucle=linea;
+        valorTn=valorIdent;//El valor identidad ya que el valor de la expresion sera siempre 1
+        this.codigo+=codigo;
         valorTn = valorTn.add(switchBlock(variables, variablesArray, n));
-        codigo += "\n";
+        this.codigo += "\n";
+        linea++;
+        
 
-        methodCollection.get(methodCollection.size() - 1).getValores().add("Switch->" + valorTn.toString());
-
-        return valorTn;
-    }
-
-    public PolynomialFunction switchExpression(ArrayList<String> variables, ArrayList<String> variablesArray) {
-
-        PolynomialFunction valorTn = valorIdent;
-        codigo += "n";
+        methodCollection.get(methodCollection.size() - 1).getValores().add("\nLinea:"+lineaBucle+"-:-"+codigo+"->" + valorTn.toString());
 
         return valorTn;
     }
+
+    public String switchExpression(ArrayList<String> variables, ArrayList<String> variablesArray) {
+
+
+         x = r.nextInt(100);
+         String codigo;
+         if(x<50){
+             int entero=r.nextInt(10)+1;
+             codigo="n+"+entero;
+         }else{
+             int entero=r.nextInt(10)+1;
+             codigo="n-"+entero;
+         }
+         return codigo;
+    }
+    
 
     public PolynomialFunction switchBlock(ArrayList<String> variables, ArrayList<String> variablesArray, int n) {
 
@@ -824,6 +858,7 @@ public class Generador {
         PolynomialFunction valorTn = valorIdent;
 
         codigo += "\ncase " + integerLiteral() + ":\n";
+        linea+=2;
 
         return valorTn;
     }
@@ -843,6 +878,7 @@ public class Generador {
         }
         if (x <= 75) {
             codigo += "\ndefault:\n";
+            linea+=2;
             valorTn = blockStatements(variables2, variablesArray2, n, 4);
 
         } else {
@@ -857,14 +893,24 @@ public class Generador {
 
         PolynomialFunction valorTn, valorTe, valorTB, valorTs;
 
-        codigo += primitiveType() + IDFCreator(variables) + "=" + "0" + ";";
+        codigo += primitiveType() + IDFCreator(variables) + "=" + "0" + ";\n";
+        linea++;
 
         valorTs = valorIdent;
-
-        codigo += "\nwhile" + "(";
-        valorTe = expressionWhile(variables, variablesArray, 2);
-        codigo += ")\n";
-
+        String codigo1="";
+        codigo1 += "while" + "(";
+       
+           codigo1 += codigoF + "++" + "<" + "n";
+            double[] c = {0, 1};
+            valorTe  = new PolynomialFunction(c);
+        
+         
+         
+        codigo1 += ")\n";
+        linea++;
+        int lineaBucle=linea;
+        
+        codigo+=codigo1;
         if (log) {
             valorTB = valorTe.multiply(block(variables, variablesArray, 0, true, n));
         } else {
@@ -873,7 +919,7 @@ public class Generador {
 
         valorTn = valorTe.add(valorTB).add(valorIdent).add(valorTs);
 
-        methodCollection.get(methodCollection.size() - 1).getValores().add("whileN->" + valorTn.toString());
+        methodCollection.get(methodCollection.size() - 1).getValores().add("\nLinea:"+lineaBucle+"-:-"+codigo1+"->" + valorTn.toString());
 
         return valorTn;
     }
@@ -885,19 +931,27 @@ public class Generador {
         codigo += primitiveType() + IDFCreator(variables) + "=" + "1" + ";";
 
         //valorTs = valorIdent;
-        codigo += "\nwhile" + "(";
-        valorTe = expressionWhile(variables, variablesArray, 1);
-        codigo += ")\n";
+        String codigo1="";
+        codigo1 += "while" + "(";
+         codigo1 += codigoF + "<" + "n";
+            double[] c = {1};
+            valorTe = new PolynomialFunction(c);
+            Method m = methodCollection.get(methodCollection.size() - 1);
+            m.setLog(true);
+        codigo1 += ")\n";
+        linea++;
+        int lineaBucle=linea;
+        codigo+=codigo1;
         methodCollection.get(methodCollection.size() - 1).setLog(true);
 
         funcLog = valorTe.add(block(variables, variablesArray, 1, false, 0));
 
-        methodCollection.get(methodCollection.size() - 1).getValores().add("whileL->" + funcLog.toString());
+        methodCollection.get(methodCollection.size() - 1).getValores().add("\nLinea:"+lineaBucle+"-:-"+codigo1+"->" +"Log("+ funcLog.toString()+")");
 
         return funcLog;
 
     }
-
+/*
     public PolynomialFunction expressionWhile(ArrayList<String> variables, ArrayList<String> variablesArray, int opt) {
 
         PolynomialFunction valorTn;
@@ -916,7 +970,8 @@ public class Generador {
 
         return valorTn;
     }
-
+*/
+    
     public PolynomialFunction forStatement(ArrayList<String> variables, ArrayList<String> variablesArray, int n) {
         PolynomialFunction valorTn;
 
@@ -930,13 +985,16 @@ public class Generador {
             variablesArray2.add(s);
 
         }
-        codigo += "for" + "(";
+        expFor="";
+        expFor += "for" + "(";
         valorTn = forOption(variables2, variablesArray2);
-        codigo += ")\n";
-
+        expFor += ")\n";
+        linea++;
+        int lineaBucle=linea;
+        codigo+=expFor;
         valorTn = valorTn.add(repeticionFor.multiply(block(variables2, variablesArray2, 0, false, n)));
 
-        methodCollection.get(methodCollection.size() - 1).getValores().add("For->" + valorTn.toString());
+        methodCollection.get(methodCollection.size() - 1).getValores().add("\nLinea:"+lineaBucle+"-:-"+expFor+"->" + valorTn.toString());
 
         return valorTn;
     }
@@ -954,11 +1012,15 @@ public class Generador {
             variablesArray2.add(s);
 
         }
-        codigo += "for(int i = 1 ; i <= Math.pow( 2, n ) ; i++)\n";
+        String codigo1;
+        codigo1 = "for(int i = 1 ; i <= Math.pow( 2, n ) ; i++)\n";
+        linea++;
+        int lineaBucle=linea;
+        codigo+=codigo1;
         valorTn = valorIdent;
         methodCollection.get(methodCollection.size() - 1).setExp(true);
         funcExp = valorTn.add(valorIdent.multiply(block(variables2, variablesArray2, 0, false, complex1)));
-        methodCollection.get(methodCollection.size() - 1).getValores().add("forE->" + valorTn.toString());
+        methodCollection.get(methodCollection.size() - 1).getValores().add("\nLinea:"+lineaBucle+"-:-"+codigo1+"->" + valorTn.toString());
 
         return valorTn;
     }
@@ -972,20 +1034,20 @@ public class Generador {
                 PolynomialFunction f = new PolynomialFunction(c);
                 repeticionFor = f;
                 valorTn = forInit(variables, variablesArray, 1);
-                codigo += ";";
+                expFor += ";";
                 valorTn = valorTn.add(expressionF(variables, variablesArray, 1).multiply(f));
                 valorTn = valorTn.add(valorIdent);
-                codigo += ";";
+                expFor += ";";
                 valorTn = valorTn.add(forUpdate(variables, variablesArray, 1).multiply(f));
             } else {
                 double[] c = {1, 1};
                 PolynomialFunction f = new PolynomialFunction(c);
                 repeticionFor = f;
                 valorTn = forInit(variables, variablesArray, 1);
-                codigo += ";";
+                expFor += ";";
                 valorTn = valorTn.add(expressionF(variables, variablesArray, 2).multiply(f));
                 valorTn = valorTn.add(valorIdent);
-                codigo += ";";
+                expFor += ";";
                 valorTn = valorTn.add(forUpdate(variables, variablesArray, 1).multiply(f));
 
             }
@@ -994,25 +1056,25 @@ public class Generador {
             if (x <= 37) {
 
                 valorTn = forInit(variables, variablesArray, 2);
-                codigo += ";";
+                expFor += ";";
                 double[] c = {-k1, 1};
                 PolynomialFunction f = new PolynomialFunction(c);
                 repeticionFor = f;
                 valorTn = valorTn.add(expressionF(variables, variablesArray, 1).multiply(f));
                 valorTn = valorTn.add(valorIdent);
-                codigo += ";";
+                expFor += ";";
                 valorTn = valorTn.add(forUpdate(variables, variablesArray, 1).multiply(f));
 
             } else {
 
                 valorTn = forInit(variables, variablesArray, 2);
-                codigo += ";";
+                expFor += ";";
                 double[] c = {-k1, 1};
                 PolynomialFunction f = new PolynomialFunction(c);
                 repeticionFor = f;
                 valorTn = valorTn.add(expressionF(variables, variablesArray, 2).multiply(f));
                 valorTn = valorTn.add(valorIdent);
-                codigo += ";";
+                expFor += ";";
                 valorTn = valorTn.add(forUpdate(variables, variablesArray, 1).multiply(f));
 
             }
@@ -1023,10 +1085,10 @@ public class Generador {
                 PolynomialFunction f = new PolynomialFunction(c);
                 repeticionFor = f;
                 valorTn = forInit(variables, variablesArray, 3);
-                codigo += ";";
+                expFor += ";";
                 valorTn = valorTn.add(expressionF(variables, variablesArray, 3).multiply(f));
                 valorTn = valorTn.add(valorIdent);
-                codigo += ";";
+                expFor += ";";
                 valorTn = valorTn.add(forUpdate(variables, variablesArray, 3).multiply(f));
 
             } else {
@@ -1034,10 +1096,10 @@ public class Generador {
                 PolynomialFunction f = new PolynomialFunction(c);
                 repeticionFor = f;
                 valorTn = forInit(variables, variablesArray, 3);
-                codigo += ";";
+                expFor += ";";
                 valorTn = valorTn.add(expressionF(variables, variablesArray, 4).multiply(f));
                 valorTn = valorTn.add(valorIdent);
-                codigo += ";";
+                expFor += ";";
                 valorTn = valorTn.add(forUpdate(variables, variablesArray, 2).multiply(f));
 
             }
@@ -1045,27 +1107,27 @@ public class Generador {
             if (x <= 87) {
 
                 valorTn = forInit(variables, variablesArray, 3);
-                codigo += ";";
+                expFor += ";";
                 valorTa = expressionF(variables, variablesArray, 5);
                 double[] c = {-k1, 1};
                 PolynomialFunction f = new PolynomialFunction(c);
                 repeticionFor = f;
                 valorTa = valorTa.multiply(f);
                 valorTn = valorTn.add(valorIdent).add(valorTa);
-                codigo += ";";
+                expFor += ";";
                 valorTn = valorTn.add(forUpdate(variables, variablesArray, 2).multiply(f));
 
             } else {
 
                 valorTn = forInit(variables, variablesArray, 3);
-                codigo += ";";
+                expFor += ";";
                 valorTa = expressionF(variables, variablesArray, 6);
                 double[] c = {-k1 + 1, 1};
                 PolynomialFunction f = new PolynomialFunction(c);
                 repeticionFor = f;
                 valorTa = valorTa.multiply(f);
                 valorTn = valorTn.add(valorIdent).add(valorTa);
-                codigo += ";";
+                expFor += ";";
                 valorTn = valorTn.add(forUpdate(variables, variablesArray, 2).multiply(f));
 
             }
@@ -1121,31 +1183,31 @@ public class Generador {
         switch (opt) {
             case 1:
                 valorTn = valorIdent;
-                codigo += IDForU(variables) + "<" + "n";
+                expFor += IDForU(variables) + "<" + "n";
                 break;
             case 2:
                 valorTn = valorIdent;
-                codigo += IDForU(variables) + "<=" + "n";
+                expFor += IDForU(variables) + "<=" + "n";
                 break;
             case 3:
                 valorTn = valorIdent;
-                codigo += IDForU(variables) + ">" + "0";
+                expFor += IDForU(variables) + ">" + "0";
                 break;
             case 4:
                 valorTn = valorIdent;
-                codigo += IDForU(variables) + ">=" + "0";
+                expFor += IDForU(variables) + ">=" + "0";
                 break;
             case 5:
                 valorTn = valorIdent;
-                codigo += IDForU(variables) + ">";
+                expFor += IDForU(variables) + ">";
                 k1 = r.nextInt(50) + 1;
-                codigo += k1 + "";
+                expFor += k1 + "";
                 break;
             case 6:
                 valorTn = valorIdent;
-                codigo += IDForU(variables) + ">=";
+                expFor += IDForU(variables) + ">=";
                 k1 = r.nextInt(50) + 1;
-                codigo += k1 + "";
+                expFor += k1 + "";
                 break;
 
         }
@@ -1160,22 +1222,22 @@ public class Generador {
         switch (opt) {
             case 1:
                 valorTn = valorIdent;
-                codigo += primitiveType() + IDCreator(variables) + "=" + "0";
+                expFor += primitiveType() + IDCreator(variables) + "=" + "0";
                 break;
             case 2:
                 valorTn = valorIdent;
-                codigo += primitiveType() + IDCreator(variables) + "=";
+                expFor += primitiveType() + IDCreator(variables) + "=";
 
                 k1 = r.nextInt(50) + 1;
-                codigo += k1 + "";
+                expFor += k1 + "";
                 break;
             case 3:
                 valorTn = valorIdent;
-                codigo += primitiveType() + IDCreator(variables) + "=" + "n";
+                expFor += primitiveType() + IDCreator(variables) + "=" + "n";
                 break;
             default:
                 valorTn = valorIdent;
-                codigo += primitiveType() + IDCreator(variables) + "=" + literal();
+                expFor += primitiveType() + IDCreator(variables) + "=" + literal();
 
         }
 
@@ -1189,17 +1251,17 @@ public class Generador {
         switch (opt) {
             case 1:
                 valorTn = valorIdent;
-                codigo += IDForU(variables) + "++";
+                expFor += IDForU(variables) + "++";
                 break;
             case 2:
                 valorTn = valorIdent;
-                codigo += IDForU(variables) + "--";
+                expFor += IDForU(variables) + "--";
                 break;
             case 3:
                 valorTn = valorIdent;
-                codigo += IDForU(variables) + "+=";
+                expFor += IDForU(variables) + "+=";
                 j1 = r.nextInt(50) + 1;
-                codigo += j1 + "";
+                expFor += j1 + "";
                 break;
             default:
 
@@ -1214,12 +1276,15 @@ public class Generador {
         PolynomialFunction valorTn = valorIdent;
         if (x <= 33 && variablesArray.size() > 1) {
             codigo += "return " + arrayAccess(variablesArray) + ";\n";
+            linea++;
 
         } else if (x > 33 && x <= 67 && variables.size() > 1) {
             codigo += "return " + ID(variables) + ";\n";
+            linea++;
         } else {
 
             codigo += "return " + shiftExpression(variables, variablesArray) + ";\n";
+            linea++;
         }
 
         return valorTn;
@@ -1230,6 +1295,7 @@ public class Generador {
         PolynomialFunction valorTn = valorIdent;
 
         codigo += "break" + ";\n";
+        linea++;
 
         return valorTn;
     }
@@ -1248,7 +1314,9 @@ public class Generador {
         PolynomialFunction valorTn;
 
         if (x <= 90) {
-            valorTn = conditionalExpression(variables, variablesArray);
+           
+            valorTn =valorIdent;
+            codigo+=conditionalExpression(variables, variablesArray);
 
         } else {
             valorTn = assignment(variables, variablesArray);
@@ -1301,10 +1369,11 @@ public class Generador {
         return codigo;
     }
 
-    public PolynomialFunction conditionalExpression(ArrayList<String> variables, ArrayList<String> variablesArray) {
+    public String conditionalExpression(ArrayList<String> variables, ArrayList<String> variablesArray) {
         x = r.nextInt(100);
 
-        PolynomialFunction valorTn = valorIdent;
+        
+        String codigo="";
         if (x <= 90) {
             codigo += conditionalOrExpression(variables, variablesArray, 0);
 
@@ -1313,7 +1382,7 @@ public class Generador {
             codigo += booleanLiteral();
         }
 
-        return valorTn;
+        return codigo;
     }
 
     public String conditionalOrExpression(ArrayList<String> variables, ArrayList<String> variablesArray, int contador) {

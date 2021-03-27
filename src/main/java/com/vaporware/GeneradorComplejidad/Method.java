@@ -136,13 +136,13 @@ public class Method {
 
     public String correccion() {
         if (nlog) {
-            return "Method{" + "name=" + name + ", Tn=" + tn + "Log(" + tnLog + "n)" + '}' + '\n' + mostrarValores();
+            return "Method{"+"Tn=" + tn + "Log(" + tnLog + "n)" + '}' + '\n' + mostrarValores();
         } else if (log) {
-            return "Method{" + "name=" + name + ", Tn=" + tn + "+ Log(" + tnLog + "n)" + '}' + '\n' + mostrarValores();
+            return "Method{" + "Tn=" + tn + "+ Log(" + tnLog + "n)" + '}' + '\n' + mostrarValores();
         } else if (exp) {
-            return "Method{" + "name=" + name + ", Tn=" + tn + "+ 2^n*" + '(' + tnExp + ')' + '}' + "\n" + mostrarValores();
+            return "Method{" +"Tn=" + tn + "+ 2^n*" + '(' + tnExp + ')' + '}' + "\n" + mostrarValores();
         } else {
-            return "Method{" + "name=" + name + ", Tn=" + tn + '}' + "\n" + mostrarValores();
+            return "Method{" +"Tn=" + tn + '}' + "\n" + mostrarValores();
         }
     }
 

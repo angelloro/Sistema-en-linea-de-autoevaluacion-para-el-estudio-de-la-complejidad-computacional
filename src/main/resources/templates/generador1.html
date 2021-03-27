@@ -32,12 +32,12 @@
                 }
 
                 .botonDiv{
-                     
+
                     display: flex;
                     justify-content: center;
                     align-items: center;
                     min-height: 75vh;
-                    
+
                 }
                 .radio input[type=radio] {
                     display: none;
@@ -132,13 +132,30 @@
 
 
                 .modal-body {padding: 2px 16px;}
+                .modal-footer {
+
+
+                    padding: 2px 16px;
+                    background-color: #808080;
+
+                }
+                .explicacion{
+                    width: 100%;
+                    height: 100%;
+                    font-size: 20px;
+                    color: white;
+                    text-align: center;
+                }
+                .explicacion h1{
+                    color: black;
+                }
 
                 .codeArea{
 
                     width: 100%;
                     height: 100%;
 
-                    
+
                     text-align: left;
                 }
                 .row{
@@ -148,7 +165,7 @@
                 .col1{
                     width: 55%;
                 }
-                 .col2{
+                .col2{
                     width: 45%;
                 }
 
@@ -251,14 +268,23 @@
                 </div>
             </div>
         </div>
+        <script  th:inline="javascript">
+               var labels = document.getElementsByName("label");
+                var r = /*[[${generador.valor()}]]*/'default';
+                for (var i = 0; i < labels.length; i++) {
+                    console.log(labels[i]);
+                    var texto=labels[i].textContent;
+                    
+                    labels[i].textContent=texto.replace(/x/g,"n");
+                }
+            </script>
         <script th:inline="javascript">
             function funcionMostrar() {
-                var explicacion = document.getElementById("explicacion");
-                if (explicacion.style.display === "none") {
-                    explicacion.style.display = "block";
-                }
-                var boton = document.getElementById("boton");
-               // boton.disabled = true;
+                //var explicacion = document.getElementById("explicacion");
+                //if (explicacion.style.display === "none") {
+                //   explicacion.style.display = "block";
+                //}
+
                 var radio = document.getElementsByName("opcion");
                 var r = /*[[${generador.valor()}]]*/'default';
                 for (var i = 0; i < radio.length; i++) {
@@ -270,12 +296,14 @@
                         if (r == radio[i].value) {
                             document.getElementById("modal-head").innerHTML = "<h2>Has acertado</h2>  <span class='close'>&times;</span>";
                             document.getElementById("modal-head").style.backgroundColor = "green";
+
                             //var t = document.getElementById(radio[i].htmlFor);
                             // console.log(t);
                             //t.style.backgroundColor = "red";
                         } else {
                             document.getElementById("modal-head").innerHTML = " <h2>Has fallado</h2> <span class='close'>&times;</span>";
                             document.getElementById("modal-head").style.backgroundColor = "#eb0000";
+
                         }
 
                     }
@@ -321,16 +349,57 @@
                     <a class="btn  btn-block btn-dark" href="" role="button">Volver a generar codigo con los mismos parametros</a> 
                     <a class="btn  btn-block btn-dark" th:href="@{/generador}" role="button">Volver al generador</a> 
                 </div>
+                <div class="modal-footer" id="modal-footer">                    
+                    <pre class="explicacion" id="explicacion" ></pre>                   
+                </div>
+                <script  th:inline="javascript">
+                    var explicacion = document.getElementById("explicacion");
+                    //th:text="${generador.correccion()}"
+                    const exp = /*[[${generador.getValores()}]]*/'default';
+                    const valor = /*[[${generador.valor()}]]*/'default';  
+                    
+                    explicacion.innerHTML +="<h1>Tn{"+valor.replace(/x/g,"n")+"}</h1>" ;
+                    
+                  for(var i=0;i<exp.length;i++){
+                      //console.log(exp[i]);
+                      var res=exp[i].split("-:-");
+                      
+                      var linea=res[0].split(":");
+                      
+                      
+                      var rw=res[1].split("->");
+                      var bucle = rw[0].replace('<', '&#60;');
+                      var resultado = rw[1].replace(/x/g,"n");
+                      
+                      
+                      explicacion.innerHTML +="<pre >"+"<span style='color:white ;cursor:pointer'  onclick='irLinea("+linea[1]+")'>"+bucle+resultado+"</span>"+"</pre>" ;
+                      
+                      //explicacion.innerHTML +="<p>"+res[1].toString()+"</p>" ;
+                       //explicacion.innerHTML +=res[1] ;
+                  }
+                    
+                    function irLinea( linea){
+                        
+                        var modal = document.getElementById("myModal");
+                        modal.style.display = "none";
+                        var editor = ace.edit("codeArea");
+                        editor.gotoLine(linea);
+                    }
+                </script>
 
             </div>
         </div> 
+
+
+
+
+
+
+        <!--
+        
         <pre id="explicacion" class= "explicacion" style = "display:none"  th:text="${generador.correccion()}"> </pre>
-
-
-
-
-
-        <!--<input type="submit" value="corregir" />    <button >Corregir</button>              style="display:none;  
+        
+        <input type="submit" value="corregir" />    <button >Corregir</button>              style="display:none;  
                              
                              
                              <p>Click <a th:href="@{/home}">aqui</a> para volver al inicio .</p>
