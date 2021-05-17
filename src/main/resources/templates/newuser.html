@@ -47,15 +47,13 @@
         </head>
         <body>
             <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-                <a class="navbar-brand" th:href="@{/}">GenTool</a>
+                <a class="navbar-brand" th:href="@{/}">Generador</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="collapsibleNavbar">
                     <ul class="navbar-nav">                  
-                        <li class="nav-item">
-                            <a class="nav-link" th:href="@{/generador}">Generador</a>
-                        </li>
+                       
                         <li  sec:authorize="hasAuthority('Profesor')" class="nav-item">
                             <a class="nav-link" th:href="@{/users}">Usuarios</a>
                         </li>
@@ -86,7 +84,7 @@
                     </div>
                     <div class="form-group">
                         <label for="password">Contraseña:</label>
-                        <input th:field="*{password}" placeholder="Introduzca nueva Contraseña" required/>
+                        <input th:field="*{password}" placeholder="Introduzca nueva contraseña" required/>
                         <p th:each="error: ${#fields.errors('password')}" 
                            th:text="${error}">Validation error</p>
                     </div>
@@ -94,11 +92,11 @@
                         <label for="complex">Complejidad:</label>
                         <select th:field="*{complex_u}">
                             <option value="constante" >Constante</option>
-                            <option value="logaritmica" >Logaritmica</option>
+                            <option value="logaritmica" >Logarítmica</option>
                             <option value="lineal" >Lineal</option>
                             <option value="nlog" >nlog</option>
-                            <option value="cuadratica" >Cuadratica</option>
-                            <option value="cubica" >Cubica</option>
+                            <option value="cuadratica" >Cuadrática</option>
+                            <option value="cubica" >Cúbica</option>
                             <option value="exponencial" >Exponencial</option>
                             <option value="ninguna" >Ninguna</option>
                         </select>

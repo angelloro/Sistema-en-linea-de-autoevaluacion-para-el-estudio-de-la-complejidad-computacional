@@ -85,12 +85,11 @@
                 }
 
                 .modal {
-                    display: none; /* Hidden by default */
+                   
                     position: fixed; /* Stay in place */                   
                     padding-top: 100px; /* Location of the box */                   
                     width: 100%; /* Full width */
-                    height: 100%; /* Full height */
-                    overflow: auto; /* Enable scroll if needed */
+                    height: 100%; /* Full height */                  
                     background-color: rgb(0,0,0); /* Fallback color */
                     background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
                 }
@@ -121,7 +120,7 @@
                     text-decoration: none;
                     cursor: pointer;
                 }
-
+               
                 .modal-header {
 
 
@@ -131,12 +130,19 @@
                 }
 
 
-                .modal-body {padding: 2px 16px;}
+                .modal-body {
+
+                    height: 350px;
+                    width: 100%;
+                   
+                    background-color: #808080
+
+                }
                 .modal-footer {
 
 
                     padding: 2px 16px;
-                    background-color: #808080;
+
 
                 }
                 .explicacion{
@@ -177,17 +183,15 @@
             </style>
     </head>
     <body>
-        <!--  <form th:action="@{/generador1}" th:object="${generador}" method="POST" enctype="utf8">-->
+
         <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-            <a class="navbar-brand" th:href="@{/}">GenTool</a>
+            <a class="navbar-brand" th:href="@{/}">Generador</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="collapsibleNavbar">
                 <ul class="navbar-nav">                  
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/generador}">Generador</a>
-                    </li>
+                   
                     <li  sec:authorize="hasAuthority('Profesor')" class="nav-item">
                         <a class="nav-link" th:href="@{/users}">Usuarios</a>
                     </li>
@@ -218,18 +222,6 @@
                 <div class="codeArea" id="codeArea"></div>
             </div>
 
-            <!-- <script src="https://unpkg.com/codeflask/build/codeflask.min.js"></script> 
-             <script th:inline="javascript">
-               
-                 const flask = new CodeFlask('.codeArea', {language: 'java', lineNumbers: true, readonly: true});
-                 flask.addLanguage('java', Prism.languages['java'])
-                 let code = /*[[${generador.getCodigo()}]]*/'default';
-     
-                 flask.updateCode(code);
-             </script>
-            
-            -->
-
             <script th:src="@{/webjars/ace/src/ace.js}"></script>
             <script  th:inline="javascript">
                 var editor = ace.edit("codeArea");
@@ -249,7 +241,7 @@
             <div class="col2">
                 <div class="botonDiv">                   
                     <div class="radio">
-                        <p style="color:#FFFFFF"> Seleccione el tiempo de ejecucion del codigo:</p>
+                        <p style="color:#FFFFFF"> Seleccione el tiempo de ejecución del código:</p>
                         <div class="opciones">
                             <input  type="radio" name="opcion" id="opcion1"  th:value="${generador.getLista().get(0)}" />
                             <label name="label" for="opcion1"th:text="${generador.getLista().get(0)}"  >   </label>
@@ -269,15 +261,15 @@
             </div>
         </div>
         <script  th:inline="javascript">
-               var labels = document.getElementsByName("label");
-                var r = /*[[${generador.valor()}]]*/'default';
-                for (var i = 0; i < labels.length; i++) {
-                    console.log(labels[i]);
-                    var texto=labels[i].textContent;
-                    
-                    labels[i].textContent=texto.replace(/x/g,"n");
-                }
-            </script>
+            var labels = document.getElementsByName("label");
+            var r = /*[[${generador.valor()}]]*/'default';
+            for (var i = 0; i < labels.length; i++) {
+                
+                var texto = labels[i].textContent;
+
+                labels[i].textContent = texto.replace(/x/g, "n");
+            }
+        </script>
         <script th:inline="javascript">
             function funcionMostrar() {
                 //var explicacion = document.getElementById("explicacion");
@@ -338,73 +330,57 @@
             }
         </script>
         <div id="myModal" class="modal">
+            
+                <!-- Modal content -->
+                <div class="modal-content" >
+                    <div class="modal-header"id="modal-head">                      
+                        <h2>Ninguna opcion seleccionada</h2>
+                        <span class='close'>&times;</span>
+                    </div>
+                    <div class="modal-body" id="modal-body">
+                        <pre class="explicacion" id="explicacion" ></pre>
+                    </div>
+                    <div class="modal-footer" id="modal-footer">                    
 
-            <!-- Modal content -->
-            <div class="modal-content" >
-                <div class="modal-header"id="modal-head">                      
-                    <h2>Ninguna opcion seleccionada</h2>
-                    <span class='close'>&times;</span>
-                </div>
-                <div class="modal-body" id="modal-body">
-                    <a class="btn  btn-block btn-dark" href="" role="button">Volver a generar codigo con los mismos parametros</a> 
-                    <a class="btn  btn-block btn-dark" th:href="@{/generador}" role="button">Volver al generador</a> 
-                </div>
-                <div class="modal-footer" id="modal-footer">                    
-                    <pre class="explicacion" id="explicacion" ></pre>                   
-                </div>
-                <script  th:inline="javascript">
-                    var explicacion = document.getElementById("explicacion");
-                    //th:text="${generador.correccion()}"
-                    const exp = /*[[${generador.getValores()}]]*/'default';
-                    const valor = /*[[${generador.valor()}]]*/'default';  
-                    
-                    explicacion.innerHTML +="<h1>Tn{"+valor.replace(/x/g,"n")+"}</h1>" ;
-                    
-                  for(var i=0;i<exp.length;i++){
-                      //console.log(exp[i]);
-                      var res=exp[i].split("-:-");
-                      
-                      var linea=res[0].split(":");
-                      
-                      
-                      var rw=res[1].split("->");
-                      var bucle = rw[0].replace('<', '&#60;');
-                      var resultado = rw[1].replace(/x/g,"n");
-                      
-                      
-                      explicacion.innerHTML +="<pre >"+"<span style='color:white ;cursor:pointer'  onclick='irLinea("+linea[1]+")'>"+bucle+resultado+"</span>"+"</pre>" ;
-                      
-                      //explicacion.innerHTML +="<p>"+res[1].toString()+"</p>" ;
-                       //explicacion.innerHTML +=res[1] ;
-                  }
-                    
-                    function irLinea( linea){
-                        
-                        var modal = document.getElementById("myModal");
-                        modal.style.display = "none";
-                        var editor = ace.edit("codeArea");
-                        editor.gotoLine(linea);
-                    }
-                </script>
+                        <a class="btn  btn-block btn-dark" href="" role="button">Volver a generar codigo con los mismos parametros</a> 
+                        <a class="btn  btn-block btn-dark" th:href="@{/generador}" role="button">Volver al generador</a> 
+                    </div>
+                    <script  th:inline="javascript">
+                        var explicacion = document.getElementById("explicacion");
+                        //th:text="${generador.correccion()}"
+                        const exp = /*[[${generador.getValores()}]]*/'default';
+                        const valor = /*[[${generador.valor()}]]*/'default';
 
-            </div>
+                        explicacion.innerHTML += "<h1>Tn{" + valor.replace(/x/g, "n") + "}</h1>";
+
+                        for (var i = 0; i < exp.length; i++) {
+                            //console.log(exp[i]);
+                            var res = exp[i].split("-:-");
+
+                            var linea = res[0].split(":");
+
+
+                            var rw = res[1].split("->");
+                            var bucle = rw[0].replace('<', '&#60;');
+                            var resultado = rw[1].replace(/x/g, "n");
+
+
+                            explicacion.innerHTML += "<pre >" + "<span style='color:white ;cursor:pointer'  onclick='irLinea(" + linea[1] + ")'>" + bucle + resultado + "</span>" + "</pre>";
+
+                        }
+
+                        function irLinea(linea) {
+
+                            var modal = document.getElementById("myModal");
+                            modal.style.display = "none";
+                            var editor = ace.edit("codeArea");
+                            editor.gotoLine(linea);
+                        }
+                    </script>
+
+                </div>
+            
         </div> 
-
-
-
-
-
-
-        <!--
-        
-        <pre id="explicacion" class= "explicacion" style = "display:none"  th:text="${generador.correccion()}"> </pre>
-        
-        <input type="submit" value="corregir" />    <button >Corregir</button>              style="display:none;  
-                             
-                             
-                             <p>Click <a th:href="@{/home}">aqui</a> para volver al inicio .</p>
-                             
-        -->
 
         <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
         <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
