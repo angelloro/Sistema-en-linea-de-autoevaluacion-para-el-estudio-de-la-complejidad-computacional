@@ -16,9 +16,5 @@ create table USER
 ALTER TABLE USER AUTO_INCREMENT=1;
 
  insert into USER ( USERNAME ,PASSWORD ,ENABLED,ROL_U,COMPLEX_U)
- values ( 'Dante', 'contra7', true,'Alumno','Lineal');
- insert into USER ( USERNAME ,PASSWORD ,ENABLED,ROL_U,COMPLEX_U)
- values ( 'ragnar', 'contra7',true, 'Profesor',null);
- insert into USER ( USERNAME ,PASSWORD ,ENABLED,ROL_U,COMPLEX_U)
- values ( 'angel', 'contra7',true, 'Estudiante','logn');
+ values ( 'Dante', '$2a$10$5Vo40BraGjvHgZaUEYoKbeZj8dtajtwpRW1TU/EH23AUS5aV3u2qK', true,'Profesor','Ninguna');
 

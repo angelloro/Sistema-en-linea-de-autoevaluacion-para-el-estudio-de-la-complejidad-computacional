@@ -57,6 +57,7 @@ public class AppController {
     }
    
 
+    
     @GetMapping("/users")
     public String listUsers(Model model) {
         List<User> listUsers = userRepository.findAll();
@@ -76,6 +77,7 @@ public class AppController {
         return "newuser";
     }
 
+    
     @PostMapping("/newuser")
     public void processRegister(@ModelAttribute("user") User user, HttpServletResponse response) throws IOException {
         //userRepository.save(user);

@@ -563,6 +563,7 @@ public class Generador {
 
         return valorTn;
     }
+  
 
     public PolynomialFunction blockStatement(ArrayList<String> variables, ArrayList<String> variablesArray, int n) {
         x = r.nextInt(100);
@@ -608,17 +609,17 @@ public class Generador {
         x = r.nextInt(100);
         PolynomialFunction valorTn;
 
-        if (n < complex1 && cantFor > 0) {
+        if (n < complex1 && cantFor > 0 && x<=20) {
             cantFor--;
             n++;
             valorTn = forStatement(variables, variablesArray, n);
-        } else if (x > 20 && x <= 30 && cantIf > 0) {
+        } else if (x > 20 && x <= 40 && cantIf > 0) {
             cantIf--;
             valorTn = ifThenStatement(variables, variablesArray, n);
-        } else if (x > 30 && x <= 60 && cantIfElse > 0) {
+        } else if (x > 40 && x <= 60 && cantIfElse > 0) {
             cantIfElse--;
             valorTn = ifThenElseStatement(variables, variablesArray, n);
-        } else if (n < complex1 && cantWhile > 0) {
+        } else if (n < complex1 && cantWhile > 0 && x > 60 && x <= 80) {
             cantWhile--;
             n++;
             valorTn = whileStatementN(variables, variablesArray, n, false);
@@ -919,6 +920,7 @@ public class Generador {
         }
 
         valorTn = valorTe.add(valorTB).add(valorIdent).add(valorTs);
+  
 
         methodCollection.get(methodCollection.size() - 1).getValores().add("\nLinea:" + lineaBucle + "-:-" + codigo1 + "->" + valorTn.toString());
 
@@ -994,6 +996,7 @@ public class Generador {
         linea++;
         int lineaBucle = linea;
         codigo += expFor;
+  
         valorTn = valorTn.add(repeticionFor.multiply(block(variables2, variablesArray2, 0, false, n)));
 
         methodCollection.get(methodCollection.size() - 1).getValores().add("\nLinea:" + lineaBucle + "-:-" + expFor + "->" + valorTn.toString());
@@ -1029,9 +1032,10 @@ public class Generador {
 
     public PolynomialFunction forOption(ArrayList<String> variables, ArrayList<String> variablesArray) {
         x = r.nextInt(125);
+
         PolynomialFunction valorTn, valorTa, valorTa2;
         if (x <= 25) {
-            if (x <= 12) {
+            if (x <= 12) {//var=0;var<n;var++
                 double[] c = {0, 1};
                 PolynomialFunction f = new PolynomialFunction(c);
                 repeticionFor = f;
@@ -1041,7 +1045,7 @@ public class Generador {
                 valorTn = valorTn.add(valorIdent);
                 expFor += ";";
                 valorTn = valorTn.add(forUpdate(variables, variablesArray, 1).multiply(f));
-            } else {
+            } else {//var=0;var<=n;var++
                 double[] c = {1, 1};
                 PolynomialFunction f = new PolynomialFunction(c);
                 repeticionFor = f;
@@ -1055,7 +1059,7 @@ public class Generador {
             }
 
         } else if (x > 25 && x <= 50) {
-            if (x <= 37) {
+            if (x <= 37) {//var=k1;var<n;var++
 
                 valorTn = forInit(variables, variablesArray, 2);
                 expFor += ";";
@@ -1067,11 +1071,11 @@ public class Generador {
                 expFor += ";";
                 valorTn = valorTn.add(forUpdate(variables, variablesArray, 1).multiply(f));
 
-            } else {
+            } else {//var=k1;var<=n;var++
 
                 valorTn = forInit(variables, variablesArray, 2);
                 expFor += ";";
-                double[] c = {-k1, 1};
+                double[] c = {-k1+1, 1};
                 PolynomialFunction f = new PolynomialFunction(c);
                 repeticionFor = f;
                 valorTn = valorTn.add(expressionF(variables, variablesArray, 2).multiply(f));
@@ -1082,7 +1086,7 @@ public class Generador {
             }
 
         } else if (x > 50 && x <= 75) {
-            if (x <= 62) {
+            if (x <= 62) {//var=n;var>0;var--
                 double[] c = {0, 1};
                 PolynomialFunction f = new PolynomialFunction(c);
                 repeticionFor = f;
@@ -1091,9 +1095,9 @@ public class Generador {
                 valorTn = valorTn.add(expressionF(variables, variablesArray, 3).multiply(f));
                 valorTn = valorTn.add(valorIdent);
                 expFor += ";";
-                valorTn = valorTn.add(forUpdate(variables, variablesArray, 3).multiply(f));
+                valorTn = valorTn.add(forUpdate(variables, variablesArray, 2).multiply(f));
 
-            } else {
+            } else {//var=n;var>=0;var--
                 double[] c = {1, 1};
                 PolynomialFunction f = new PolynomialFunction(c);
                 repeticionFor = f;
@@ -1106,7 +1110,7 @@ public class Generador {
 
             }
         } else {
-            if (x <= 87) {
+            if (x <= 87) {//var=n;var>k1;var--
 
                 valorTn = forInit(variables, variablesArray, 3);
                 expFor += ";";
@@ -1119,7 +1123,7 @@ public class Generador {
                 expFor += ";";
                 valorTn = valorTn.add(forUpdate(variables, variablesArray, 2).multiply(f));
 
-            } else {
+            } else {//var=n;var>=k1;var--
 
                 valorTn = forInit(variables, variablesArray, 3);
                 expFor += ";";

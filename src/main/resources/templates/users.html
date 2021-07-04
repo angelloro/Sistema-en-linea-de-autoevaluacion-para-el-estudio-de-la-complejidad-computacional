@@ -33,18 +33,23 @@
                 .table td {
                     vertical-align:middle;
                 }
+               #barraNaveg{
+                    max-height: 10%;
+                    min-height: 10%
+                }
+
 
             </style>
     </head>
     <body>
-        <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+        <nav class="navbar navbar-expand-sm bg-dark navbar-dark" id="barraNaveg">
             <a class="navbar-brand" th:href="@{/}">Generador</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="collapsibleNavbar">
                 <ul class="navbar-nav">                  
-        
+
                     <li  sec:authorize="hasAuthority('Profesor')" class="nav-item">
                         <a class="nav-link" th:href="@{/users}">Usuarios</a>
                     </li>
@@ -53,15 +58,15 @@
                     </li>
 
                 </ul>
-                </div>  
-                    <ul class="nav navbar-nav navbar-right">
-                         <li sec:authorize="!isAuthenticated()">
-                             <a th:href="@{/login}" style="color:#508723">Login</a>
-                        </li>
-                        <li sec:authorize="isAuthenticated()">
-                            <a th:href="@{/logout}" style="color:#cc0000">Logout</a>
-                        </li>
-                    </ul>          
+            </div>  
+            <ul class="nav navbar-nav navbar-right">
+                <li sec:authorize="!isAuthenticated()">
+                    <a th:href="@{/login}" style="color:#508723">Login</a>
+                </li>
+                <li sec:authorize="isAuthenticated()">
+                    <a th:href="@{/logout}" style="color:#cc0000">Logout</a>
+                </li>
+            </ul>          
         </nav>
         <h1 th:inline="text">Lista de usuarios</h1>
 

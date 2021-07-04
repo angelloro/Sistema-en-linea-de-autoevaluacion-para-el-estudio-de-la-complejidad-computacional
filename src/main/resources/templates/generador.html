@@ -44,6 +44,10 @@
                     display: inline-block;
                     border: 1px solid #ccc;
                 }
+                #barraNaveg{
+                    max-height: 10%;
+                    min-height: 10%
+                }
 
             </style>
     </head>
@@ -55,7 +59,7 @@
             </button>
             <div class="collapse navbar-collapse" id="collapsibleNavbar">
                 <ul class="navbar-nav">                  
-                   
+
                     <li  sec:authorize="hasAuthority('Profesor')" class="nav-item">
                         <a class="nav-link" th:href="@{/users}">Usuarios</a>
                     </li>
@@ -74,7 +78,7 @@
                 </li>
             </ul>          
         </nav>
-       
+
         <h1>Generar Codigo</h1>
         <form th:action="@{/generador}"  method="Post">
 
