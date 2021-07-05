@@ -79,7 +79,7 @@
             </ul>          
         </nav>
 
-        <h1>Generar Codigo</h1>
+        <h1>Generar Código</h1>
         <form th:action="@{/generador}"  method="Post">
 
             <p>Orden de Complejidad: </p>    
@@ -96,8 +96,8 @@
 
             <p>Cantidad variables:</p>  <input type="number" min="1" max="20" name="var"required> 
                 <p>Cantidad variables Array:</p> <input type="number"  min="1" max="20" name="varA"required> 
-                    <p>Nº maximo bucles por tipo:</p> <input type="number" min="1" max="5" name="bucles" onchange="cambioMaxVal(this.value)"required>
-                        <p>Nº minimo bucles por tipo:</p> <input id="minNumber" type="number" min="1"  name="buclesMin"required>
+                    <p>Nº máximo bucles y estructuras condicionales por tipo:</p> <input type="number" min="1" max="5" name="bucles" onchange="cambioMaxVal(this.value)"required>
+                        <p>Nº mínimo bucles y estructuras condicionales por tipo:</p> <input id="minNumber" type="number" min="1"  name="buclesMin"required>
                             <script>
                                 function cambioMaxVal(numMax) {
                                     var min = document.getElementById('minNumber');
