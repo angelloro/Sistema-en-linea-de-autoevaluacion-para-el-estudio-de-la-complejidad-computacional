@@ -616,9 +616,7 @@ public class Generador {
         if (n < complex1 && cantFor > 0 && x<=20) {
             cantFor--;
             n++;
-            if(n==complex1){
-                obligatorio=false;
-            }
+    
             valorTn = forStatement(variables, variablesArray, n);
         } else if (x > 20 && x <= 40 && cantIf > 0) {
             cantIf--;
@@ -629,9 +627,7 @@ public class Generador {
         } else if (n < complex1 && cantWhile > 0 && x > 60 && x <= 80) {
             cantWhile--;
             n++;
-             if(n==complex1){
-                obligatorio=false;
-            } 
+
             valorTn = whileStatementN(variables, variablesArray, n, false);
         } else {
             //comprobacion para asegurar llegar al grado minimo
